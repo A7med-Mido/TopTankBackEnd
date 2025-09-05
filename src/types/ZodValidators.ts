@@ -19,7 +19,7 @@ export const courseSchema = z.object({
   key: z.string(),
   name: z.string(),
   price: z.number().min(0),
-  offer: z.number().min(0).max(100).optional(),
+  offer: z.number().min(0).optional(),
   thumbNail: z.string().url(),
   description: z.string(),
   subscriptions: z.number().nonnegative(),
@@ -30,13 +30,14 @@ export const courseSchema = z.object({
 export const teacherSchema = z.object({
   name: z.string(),
   username: usernameSchema,
-  phone: z.string().min(10).max(15),
+  phone: z.string().min(11).max(11),
   password: z.string().min(6),
   image: z.string().url().optional(),
   verified: z.boolean().default(false),
   followers: z.number().default(0),
   balance: z.number().default(0),
   courses: z.array(courseSchema).default([]),
+  otp: z.string().min(6).max(6).default("")
 });
 
 /** --- Student Schema --- **/
@@ -51,6 +52,7 @@ export const studentSchema = z.object({
   password: z.string(),
   image: z.string().optional(),
   subscriptions: z.array(keysSchema).default([]),
+  otp: z.string().min(6).max(6).default("")
 });
 
 /** --- Infer Types --- **/

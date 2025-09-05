@@ -26,7 +26,14 @@ const teacher = new Schema<StudentDoc>({
     required: true,
     trim: true
   },
-  subscriptions: [KeysSchema]
+  subscriptions: [KeysSchema],
+  otp: {
+    type: String,
+    required: true,
+    default: "",
+    max: 6,
+    min: 6
+  }
 });
 
 const UserModel = models.user || model<StudentDoc>('teacher', teacher);

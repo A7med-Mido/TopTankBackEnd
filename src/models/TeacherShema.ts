@@ -34,7 +34,14 @@ const teacher = new Schema<TeacherDoc>({
     type: Number,
     default: 0
   },
-  courses: [CourseSchema]
+  courses: [CourseSchema],
+  otp: {
+    type: String,
+    required: true,
+    default: "",
+    min: 6,
+    max: 6
+  }
 });
 
 const UserModel = models.user || model<TeacherDoc>('teacher', teacher);
