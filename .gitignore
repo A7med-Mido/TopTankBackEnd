@@ -1,0 +1,32 @@
+# Node.js dependencies (this can be huge, no need to store in Git)
+node_modules/
+
+# Environment variables (secrets, API keys, DB passwords, etc.)
+.env
+
+# Logs (runtime logs you don’t want in Git)
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS-specific system files (accidentally created by your computer)
+.DS_Store
+Thumbs.db
+
+# Temporary files from editors or builds
+*.tmp
+*.swp
+*.swo
+
+# Build output (if you compile or bundle files, e.g., TypeScript or Webpack)
+dist/
+build/
+
+# Coverage reports (from tests)
+coverage/
+
+# Cache folders for performance tools (safe to ignore)
+.cache/
