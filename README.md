@@ -1,5 +1,5 @@
 # TopTank System
-<img src="[https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/refs/heads/main/TopTankDiagram.png?token=GHSAT0AAAAAADGJRJI2SNVGXJERVT7Y6JCI2F4AYHA" alt="TopTank Diagram](https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/refs/heads/main/TopTankDiagram.png?token=GHSAT0AAAAAADGJRJI3GHH3OOGGNQDZB53S2F4BONQ)" class="diagram">
+<img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/refs/heads/main/TopTankDiagram.png?token=GHSAT0AAAAAADGJRJI2SNVGXJERVT7Y6JCI2F4AYHA" alt="TopTank Diagram" class="diagram">
 
 ## TopTank System Flow
 
