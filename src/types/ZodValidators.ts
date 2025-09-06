@@ -49,10 +49,10 @@ export const keysSchema = z.object({
 export const studentSchema = z.object({
   name: z.string(),
   phone: z.string(),
-  password: z.string(),
+  password: z.string().min(12).max(24),
   image: z.string().optional(),
-  subscriptions: z.array(keysSchema).default([]),
-  otp: z.string().min(6).max(6).default("")
+  subscriptions: z.array(keysSchema).default([]).optional(),
+  otp: z.string().min(6).max(6).default("").optional()
 });
 
 /** --- Infer Types --- **/

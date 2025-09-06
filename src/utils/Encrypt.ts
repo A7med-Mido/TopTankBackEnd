@@ -1,5 +1,5 @@
 import { sign, verify } from "jsonwebtoken";
-import { hash } from "crypto";
+import crypto, { hash, randomInt } from "crypto";
 import { Request } from "express";
 
 export type JWT = {
@@ -19,6 +19,10 @@ export const decrypt = async (req: Request) => {
 };
 
 export const hashPassword = ({ password }:{ password: string }) => {
-  const hashedPass = hash(password, String(process.env.SALT));
+  const hashedPass = hash(password, String(process.env.JWT_SECRET));
   return hashedPass
+};
+
+export const generateOtp = () => {
+  return String(randomInt(100000, 999999))
 };

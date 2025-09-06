@@ -1,10 +1,9 @@
 import express,  { Response, Request, NextFunction } from "express"
-
+import Registration from "./routes/Registration";
 const app = express();
+app.use(express.json()); // ⭐️ THIS LINE IS CRITICAL
 
-app.get("/api", (req: Request, res: Response, next: NextFunction) => {
-  res.send({ message: "hello !! from Express" })
-});
+app.use("/api", Registration);
 
 
 
