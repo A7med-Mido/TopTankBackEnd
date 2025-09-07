@@ -7,7 +7,7 @@ const studentRegistration = async (userData: StudentInput) => {
     const studentData = studentSchema.parse(userData)
     const student = await StudentModel.create(studentData)
     return student
-  } catch (error ) {
+  } catch (error) {
     console.log(error)
     throw error
   }
