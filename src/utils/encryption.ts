@@ -2,20 +2,18 @@ import { sign, verify } from "jsonwebtoken";
 import crypto, { hash, randomInt } from "crypto";
 import { Request } from "express";
 
-export type JWT = {
+export type JWTPayload = {
   phone: string
   password: string
 };
 
-export const encrypt = ( { phone, password }: JWT ): string => {
+export const encrypt = ( { phone, password }: JWTPayload ): string => {
   return sign({ phone, password }, String(process.env.JWT_SECRET));
 };
 
-export const decrypt = async (req: Request) => {
-  const authHeader = req.headers["authorization"];
-  if(!authHeader) return null
-  const token = authHeader.split(" ")[1]; // "Bearer <token>"
-  return verify(token, String(process.env.JWT_SECRET));
+export const decrypt =  (token: string) => {
+  const decoded = verify(token, process.env.JWT_SECRET as string) as JWTPayload
+  return decoded
 };
 
 export const hashPassword = ({ password }:{ password: string }) => {

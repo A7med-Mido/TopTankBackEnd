@@ -1,10 +1,10 @@
 import { Schema, model, models } from "mongoose";
-import { StudentInput } from "../types/ZodValidators";
+import { StudentInput } from "../../types/zodValidation";
 import KeysSchema from "./CourseKeySchema";
 
 interface StudentDoc extends StudentInput, Document {}
 
-const teacher = new Schema<StudentDoc>({
+const student = new Schema<StudentDoc>({
   name: { 
     type: String,
     required: true,
@@ -36,6 +36,6 @@ const teacher = new Schema<StudentDoc>({
   }
 });
 
-const UserModel = models.user || model<StudentDoc>('teacher', teacher);
+const StudentModel = models.user || model<StudentDoc>('teacher', student);
 
-export default UserModel;
+export default StudentModel;

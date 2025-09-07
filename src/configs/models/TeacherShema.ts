@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { TeacherInput } from "../types/ZodValidators";
+import { TeacherInput } from "../../types/zodValidation";
 import CourseSchema from "./CourseSchema";
 
 interface TeacherDoc extends TeacherInput, Document {}
@@ -44,6 +44,6 @@ const teacher = new Schema<TeacherDoc>({
   }
 });
 
-const UserModel = models.user || model<TeacherDoc>('teacher', teacher);
+const TeacherModel = models.user || model<TeacherDoc>('teacher', teacher);
 
-export default UserModel;
+export default TeacherModel;

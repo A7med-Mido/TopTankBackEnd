@@ -1,22 +1,21 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { studentSchema, teacherSchema } from "../types/ZodValidators";
+import { studentSchema, teacherSchema } from "../types/zodValidation";
 import { z } from "zod";
 
 const router: Router = Router();
 
 router.post("/register", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    console.log("Raw request body:", req.body); // Check if this is still undefined
-    
-    if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(400).json({
-        error: "Request body is empty or undefined",
-        message: "Make sure you're sending JSON with Content-Type: application/json"
-      });
-    }
 
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      message: "Request body is empty or undefined"
+    });
+  }
+
+  try {
+    
     const validatedData = studentSchema.parse(req.body);
-    console.log("Validated data:", validatedData);
+
     
     res.status(201).json({
       success: true,
@@ -46,5 +45,5 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
     });
   }
 });
-
-export default router;
+const registrationRoute = router
+export default registrationRoute
