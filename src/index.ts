@@ -3,14 +3,14 @@ dotenv.config();
 import { createServer } from "http";
 import app from "./app";
 import ConnectDB from "./configs/db";
-
+import env from "./configs/env.config";
 
 const httpServer = createServer(app);
 
 (async ()=> {
   try {
     await ConnectDB()
-    httpServer.listen(process.env.PORT, () => console.log("🚀 Server running on 3000"));
+    httpServer.listen(env.PORT.toString(), () => console.log("🚀 Server running on 3000"));
   } catch(error) {
     console.log(error)
   }
