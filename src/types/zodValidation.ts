@@ -51,7 +51,10 @@ export const teacherSchema = z.object({
   followers: z.number().default(0),
   balance: z.number().default(0),
   courses: z.array(courseSchema).default([]),
-  otp: z.string().min(6).max(6).default("")
+  otp: z.string().min(6).max(6).default(""),
+  user: z
+  .enum(["teacher", "student"], { message: "This use must be either student or a teacher." })
+  .nonoptional({ message: "User role is needed." })
 });
 
 /** --- Student Schema --- **/
@@ -75,7 +78,7 @@ export const studentSchema = z.object({
   image: z.string().optional(),
   subscriptions: z.array(keysSchema).default([]).optional(),
   otp: z.string().min(6).max(6).default("").optional(),
-  user: z.enum(["teacher", "student"])
+  user: z.enum(["teacher", "student"]).nonoptional()
 });
 
 /** --- Infer Types --- **/
