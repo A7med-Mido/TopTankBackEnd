@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/main/TopTankImage.png" alt="TopTank Image" width="400" />
+  <img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/main/public/TopTankImage.png" alt="TopTank Image" width="400" />
 </p>
 
 
 # TopTank System
 <p align="center">
-  <img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/main/TopTankDiagram.png" alt="TopTank Diagram" />
+  <img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/main/public/TopTankDiagram.png" alt="TopTank Diagram" />
 </p>
 
 
