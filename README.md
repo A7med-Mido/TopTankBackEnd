@@ -1,7 +1,15 @@
-# TopTank System
-<img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/refs/heads/main/TopTankDiagram.png?token=GHSAT0AAAAAADGJRJI2SNVGXJERVT7Y6JCI2F4AYHA" alt="TopTank Diagram" class="diagram">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/main/TopTankImage.png" alt="TopTank Image" width="400" />
+</p>
 
-## TopTank System Flow
+
+# TopTank System
+<p align="center">
+  <img src="https://raw.githubusercontent.com/A7med-Mido/TopTankBackEnd/main/TopTankDiagram.png" alt="TopTank Diagram" />
+</p>
+
+
+# TopTank System Flow
 
 ### Student flow 📚🧑🏻‍🎓
 _Subscription flow_
