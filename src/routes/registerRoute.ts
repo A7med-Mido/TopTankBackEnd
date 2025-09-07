@@ -19,21 +19,21 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
 
     if(userData.user === "student") {
       delete userData.user
-      const data = await studentRegistration(userData);
+      const token = await studentRegistration(userData);
       return res.status(201).json({
         message: "You have registered successfully.",
         success: true,
-        data
+        token
       })
     }
 
     if(userData.user === "teacher") {
       delete userData.user
-      const data = await teacherRegistration(userData);
+      const token = await teacherRegistration(userData);
       return res.status(201).json({
         message: "You have registered successfully",
         success: true,
-        data
+        token
       })
     }
 

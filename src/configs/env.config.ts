@@ -4,6 +4,7 @@ const envSchema = z.object({
   DATABASE_URI: z.string(),
   JWT_SECRET: z.string(),
   PORT: z.string().transform(Number),
+  SALT: z.string()
 });
 
 const env = envSchema.parse(process.env);

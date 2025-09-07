@@ -1,25 +1,32 @@
 import { sign, verify } from "jsonwebtoken";
-import crypto, { hash, randomInt } from "crypto";
-import { Request } from "express";
+import { randomInt, scryptSync, timingSafeEqual } from "crypto";
+import env from "../configs/env.config";
 
 export type JWTPayload = {
   phone: string
   password: string
 };
 
-export const encrypt = ( { phone, password }: JWTPayload ): string => {
-  return sign({ phone, password }, String(process.env.JWT_SECRET));
+export const encrypt = ( { phone, password }: JWTPayload ) => {
+  return sign({ phone, password }, env.JWT_SECRET.toString());
 };
 
 export const decrypt =  (token: string) => {
-  const decoded = verify(token, process.env.JWT_SECRET as string) as JWTPayload
+  const decoded = verify(token, env.JWT_SECRET.toString()) as JWTPayload
   return decoded
 };
 
-export const hashPassword = ({ password }:{ password: string }) => {
-  const hashedPass = hash(password, String(process.env.JWT_SECRET));
-  return hashedPass
+const keylen = 64; // 512-bit output
+export const hashPassword = (password: string) => {
+  const hash = scryptSync(password, env.SALT.toString(), keylen).toString('hex');
+  return hash
 };
+export const verifyPassword = (password: string, storedHash: string): boolean => {
+  const hashToVerify = scryptSync(password, env.SALT.toString(), keylen);
+  const storedHashBuffer = Buffer.from(storedHash, 'hex');
+  return timingSafeEqual(hashToVerify, storedHashBuffer);
+};
+
 
 export const generateOtp = () => {
   return String(randomInt(100000, 999999))
