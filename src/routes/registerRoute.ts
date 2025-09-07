@@ -14,13 +14,12 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
 
   try {
     
-    const validatedData = studentSchema.parse(req.body);
 
+    
     
     res.status(201).json({
       success: true,
       message: "Registration successful",
-      data: validatedData
     });
 
   } catch (error) {
