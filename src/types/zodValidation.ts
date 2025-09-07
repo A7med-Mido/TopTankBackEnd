@@ -5,33 +5,47 @@ export const usernameSchema = z
   .string()
   .regex(/^[A-Za-z0-9-]{4,20}$/, {
     message:
-      "Username must be 4–20 characters long and contain only letters, numbers, and hyphens (-)",
+      "Username must be 4–20 chars and contain only letters, numbers, and hyphens (-).",
   });
 
 /** --- Video Schema --- **/
 export const videoSchema = z.object({
-  vid: z.string(),
-  name: z.string(),
+  vid: z.string().url(),
+  name: z
+  .string()
+  .max(170, { message: "The name must be less than 170 chars" }),
 });
 
 /** --- Course Schema --- **/
 export const courseSchema = z.object({
   key: z.string(),
-  name: z.string(),
-  price: z.number().min(0),
-  offer: z.number().min(0).optional(),
+  name: z
+  .string()
+  .max(150, { message: "Use a shorter name for that course, less than 150 chars." }),
+  price: z.number().min(0).nonnegative(),
+  free: z.boolean(),
+  offer: z.number().min(0).nonnegative().optional(),
   thumbNail: z.string().url(),
-  description: z.string(),
+  description: z
+  .string()
+  .max(350, { message: "The description must be less than 350 chars." }),
   subscriptions: z.number().nonnegative(),
   videos: z.array(videoSchema),
 });
 
 /** --- Teacher Schema --- **/
 export const teacherSchema = z.object({
-  name: z.string(),
+  name: z
+  .string()
+  .max(50, { message: "Your name must be less than 50 chars." }),
   username: usernameSchema,
-  phone: z.string().min(11).max(11),
-  password: z.string().min(6),
+  phone: z.
+  string()
+  .min(11, { message: "Wrong phone number." })
+  .max(11, { message: "Wrong phone number." }),
+  password: z
+  .string()
+  .min(6, { message: "Short password, you need at least 6" }),
   image: z.string().url().optional(),
   verified: z.boolean().default(false),
   followers: z.number().default(0),
@@ -47,12 +61,21 @@ export const keysSchema = z.object({
 });
 
 export const studentSchema = z.object({
-  name: z.string(),
-  phone: z.string(),
-  password: z.string().min(12).max(24),
+  name: z
+  .string()
+  .max(50, { message: "Your name must be less than 50 chars." }),
+  phone: z
+  .string()
+  .min(11, { message: "Wrong phone number." })
+  .max(11, { message: "Wrong phone number." }),
+  password: z
+  .string()
+  .min(12, { message: "Your password must be more than 12 chars." })
+  .max(24, { message: "Your password must be less than 24 chars." }),
   image: z.string().optional(),
   subscriptions: z.array(keysSchema).default([]).optional(),
-  otp: z.string().min(6).max(6).default("").optional()
+  otp: z.string().min(6).max(6).default("").optional(),
+  user: z.enum(["teacher", "student"])
 });
 
 /** --- Infer Types --- **/

@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { studentSchema, teacherSchema } from "../types/zodValidation";
 import { z } from "zod";
+import studentRegistration from "../controllers/studentRegistration";
 
 const router: Router = Router();
 
@@ -14,12 +15,21 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
 
   try {
     
+    const userData = req.body
 
-    
-    
+    if(userData.user === "student") {
+      delete userData.user
+        studentRegistration(userData)
+    }
+
+    if(userData.user === "teacher") {
+      delete userData.user
+
+    }
+
     res.status(201).json({
       success: true,
-      message: "Registration successful",
+      message: "You should set the role",
     });
 
   } catch (error) {
