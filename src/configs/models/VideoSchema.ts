@@ -1,4 +1,4 @@
-import { Schema } from "mongoose"
+import { Schema,  } from "mongoose"
 
 
 const VideoSchema = new Schema({
@@ -9,7 +9,7 @@ const VideoSchema = new Schema({
   name: {
     type: String,
     required: true
-  },
-});
+  }, 
+}, { timestamps: true });
 
 export default VideoSchema

@@ -42,7 +42,8 @@ const teacher = new Schema<TeacherDoc>({
     min: 6,
     max: 6
   }
-});
+},{ timestamps: true });
+
 
 const TeacherModel = models.user || model<TeacherDoc>('teacher', teacher);
 

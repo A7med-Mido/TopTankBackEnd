@@ -36,6 +36,6 @@ const CourseSchema = new Schema({
     default: 0
   },
   videos: [VideoSchema],
-});
+}, { timestamps: true });
 
 export default CourseSchema
