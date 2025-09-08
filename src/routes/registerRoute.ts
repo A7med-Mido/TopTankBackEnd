@@ -1,11 +1,11 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import { ZodError } from "zod";
 import studentRegistration from "../controllers/studentRegistration";
 import teacherRegistration from "../controllers/teacherRegistration";
 
 const router: Router = Router();
 
-router.post("/register", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/register", async (req: Request, res: Response) => {
 
   if (!req.body || Object.keys(req.body).length === 0) {
     return res.status(400).json({

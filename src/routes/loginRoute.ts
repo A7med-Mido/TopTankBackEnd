@@ -1,11 +1,11 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import { ZodError } from "zod";
 import studentRegistration from "../controllers/studentRegistration";
 import teacherRegistration from "../controllers/teacherRegistration";
 
 const router: Router = Router();
 
-router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/login", async (req: Request, res: Response) => {
 
   try {
     

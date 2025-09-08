@@ -9,12 +9,12 @@ const studentRegistration = async (userData: StudentInput) => {
     const studentData = studentSchema.parse(userData)
     // hashing password
     studentData.password = hashPassword(userData.password)
-    // encrypting student data
-    const { password, phone, user} = studentData
-    const token = encrypt({ password, phone, user })
+    const { phone, user } = studentData
     // delete userRole before saving to database
     delete studentData.user
-    await StudentModel.create(studentData)
+    const { _id } =  await StudentModel.create(studentData)
+    // encrypting student data
+    const token = encrypt({ id: _id.toString(), phone, user })
     // return token to store in the client
     return token
   } catch (error) {

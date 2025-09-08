@@ -5,12 +5,12 @@ import { UserRole } from "../types/zodValidation";
 
 export type JWTPayload = {
   phone: string
-  password: string,
+  id: string,
   user: UserRole
 };
 
-export const encrypt = ( { phone, password, user }: JWTPayload ) => {
-  return sign({ phone, password, user }, env.JWT_SECRET.toString());
+export const encrypt = ( { phone, id, user }: JWTPayload ) => {
+  return sign({ phone, id, user }, env.JWT_SECRET.toString());
 };
 
 export const decrypt =  (token: string) => {
