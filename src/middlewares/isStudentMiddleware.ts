@@ -1,5 +1,5 @@
 import StudentModel from "../configs/models/StudentSchema"
-import { decrypt } from "../utils/encryption"
+import { decrypt } from "../auth/encryption"
 import { Request, Response, NextFunction } from "express"
 
 
@@ -17,8 +17,8 @@ const isStudentMiddleware = async (req: Request, res: Response, next: NextFuncti
     })
   }
   try {
-    const { password, phone } = decrypt(token);
-    const student = await StudentModel.find({ password, phone })
+    const { id, phone } = decrypt(token);
+    const student = await StudentModel.find({ id, phone })
     if(!student) return res.status(401).json({ message: "This user is not authenticated" })
     next()
   } catch (error) {

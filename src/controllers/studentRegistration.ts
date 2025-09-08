@@ -1,6 +1,6 @@
 import StudentModel from "../configs/models/StudentSchema";
 import { StudentInput, studentSchema } from "../types/zodValidation";
-import { encrypt, hashPassword } from "../utils/encryption";
+import { encrypt, hashPassword } from "../auth/encryption";
 
 
 const studentRegistration = async (userData: StudentInput) => {
@@ -12,7 +12,7 @@ const studentRegistration = async (userData: StudentInput) => {
     const { phone, user } = studentData
     // delete userRole before saving to database
     delete studentData.user
-    const { _id } =  await StudentModel.create(studentData)
+    const { _id } = await StudentModel.create(studentData)
     // encrypting student data
     const token = encrypt({ id: _id.toString(), phone, user })
     // return token to store in the client
@@ -22,6 +22,5 @@ const studentRegistration = async (userData: StudentInput) => {
     throw error
   }
 }
-
 
 export default studentRegistration

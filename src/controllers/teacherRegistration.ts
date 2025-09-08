@@ -1,6 +1,6 @@
 import TeacherModel from "../configs/models/TeacherSchema";
 import { TeacherInput, teacherSchema } from "../types/zodValidation";
-import { encrypt, hashPassword } from "../utils/encryption";
+import { encrypt, hashPassword } from "../auth/encryption";
 
 
 const teacherRegistration = async (userData: TeacherInput) => {

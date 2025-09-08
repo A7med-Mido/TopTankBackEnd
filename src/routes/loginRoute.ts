@@ -1,34 +1,12 @@
 import { Router, Request, Response } from "express";
 import { ZodError } from "zod";
-import studentRegistration from "../controllers/studentRegistration";
-import teacherRegistration from "../controllers/teacherRegistration";
 
 const router: Router = Router();
 
 router.post("/login", async (req: Request, res: Response) => {
 
   try {
-    
-    const userData = req.body
-
-    if(userData.user === "student") {
-      const token = await studentRegistration(userData);
-      return res.status(201).json({
-        message: "You have registered successfully.",
-        success: true,
-        token
-      })
-    }
-
-    if(userData.user === "teacher") {
-      delete userData.user
-      const token = await teacherRegistration(userData);
-      return res.status(201).json({
-        message: "You have registered successfully",
-        success: true,
-        token
-      })
-    }
+      
 
     res.status(401).json({
       success: true,
@@ -57,5 +35,5 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   }
 });
-const registrationRoute = router
-export default registrationRoute
+const loginRoute = router
+export default loginRoute
