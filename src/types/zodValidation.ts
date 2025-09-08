@@ -8,6 +8,21 @@ export const usernameSchema = z
       "Username must be 4–20 chars and contain only letters, numbers, and hyphens (-).",
   });
 
+/** --- UserRole --- **/
+export const userRole = z
+  .enum(["teacher", "student"], { message: "This use must be either student or a teacher." })
+  .optional()
+
+/** --- UserRole --- **/
+const nameValidation = z
+  .string()
+  .max(50, { message: "Your name must be less than 50 chars." })
+
+const phoneValidation = z.
+  string()
+  .min(11, { message: "Wrong phone number." })
+  .max(11, { message: "Wrong phone number." })
+
 /** --- Video Schema --- **/
 export const videoSchema = z.object({
   vid: z.string().url(),
@@ -35,14 +50,9 @@ export const courseSchema = z.object({
 
 /** --- Teacher Schema --- **/
 export const teacherSchema = z.object({
-  name: z
-  .string()
-  .max(50, { message: "Your name must be less than 50 chars." }),
+  name: nameValidation,
   username: usernameSchema,
-  phone: z.
-  string()
-  .min(11, { message: "Wrong phone number." })
-  .max(11, { message: "Wrong phone number." }),
+  phone: phoneValidation,
   password: z
   .string()
   .min(6, { message: "Short password, you need at least 6" }),
@@ -52,9 +62,7 @@ export const teacherSchema = z.object({
   balance: z.number().default(0),
   courses: z.array(courseSchema).default([]),
   otp: z.string().min(6).max(6).default(""),
-  user: z
-  .enum(["teacher", "student"], { message: "This use must be either student or a teacher." })
-  .nonoptional({ message: "User role is needed." })
+  user: userRole
 });
 
 /** --- Student Schema --- **/
@@ -64,9 +72,7 @@ export const keysSchema = z.object({
 });
 
 export const studentSchema = z.object({
-  name: z
-  .string()
-  .max(50, { message: "Your name must be less than 50 chars." }),
+  name: nameValidation,
   phone: z
   .string()
   .min(11, { message: "Wrong phone number." })
@@ -78,10 +84,11 @@ export const studentSchema = z.object({
   image: z.string().optional(),
   subscriptions: z.array(keysSchema).default([]).optional(),
   otp: z.string().min(6).max(6).default("").optional(),
-  user: z.enum(["teacher", "student"]).nonoptional()
+  user: userRole
 });
 
 /** --- Infer Types --- **/
+export type UserRole = z.infer<typeof userRole>
 export type TeacherInput = z.infer<typeof teacherSchema>;
 export type StudentInput = z.infer<typeof studentSchema>;
 export type CourseInput = z.infer<typeof courseSchema>;

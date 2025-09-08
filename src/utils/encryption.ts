@@ -1,14 +1,16 @@
 import { sign, verify } from "jsonwebtoken";
 import { randomInt, scryptSync, timingSafeEqual } from "crypto";
 import env from "../configs/env.config";
+import { UserRole } from "../types/zodValidation";
 
 export type JWTPayload = {
   phone: string
-  password: string
+  password: string,
+  user: UserRole
 };
 
-export const encrypt = ( { phone, password }: JWTPayload ) => {
-  return sign({ phone, password }, env.JWT_SECRET.toString());
+export const encrypt = ( { phone, password, user }: JWTPayload ) => {
+  return sign({ phone, password, user }, env.JWT_SECRET.toString());
 };
 
 export const decrypt =  (token: string) => {

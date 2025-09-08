@@ -7,9 +7,10 @@ const teacherRegistration = async (userData: TeacherInput) => {
   try {
     const teacherData = teacherSchema.parse(userData)
     teacherData.password = hashPassword(userData.password)
+    const { password, phone, user } = teacherData
+    const token = encrypt({ phone, password, user })
+    delete teacherData.user
     await TeacherModel.create(teacherData)
-    const { password, phone } = teacherData
-    const token = encrypt({ phone, password })
     return token
   } catch (error) {
     console.log(error)
