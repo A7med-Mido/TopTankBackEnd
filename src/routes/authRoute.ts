@@ -7,7 +7,7 @@ import { isStudentAlreadyExistMiddleware, isStudentMiddleware } from "../middlew
 const authRoute: Router = Router();
 
 // Teacher Routes
-authRoute.post("/register/teacher",isTeacherAlreadyExistMiddleware , teacherRegister);
+authRoute.post("/register/teacher",isTeacherAlreadyExistMiddleware, teacherRegister);
 authRoute.delete("/delete/teacher", isTeacherMiddleware, deleteTeacher)
 
 

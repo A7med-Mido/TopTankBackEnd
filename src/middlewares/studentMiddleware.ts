@@ -21,7 +21,7 @@ export const isStudentMiddleware = async (req: Request, res: Response, next: Nex
   }
   try {
     const { id, phone } = decrypt(token);
-    const student = await StudentModel.findOne({ id, phone })
+    const student = await StudentModel.find({ id, phone })
     if(!student) {
       return res.status(401).json({ 
         message: "This user is not authenticated",
@@ -67,10 +67,9 @@ export const isStudentAlreadyExistMiddleware = async (req: Request, res: Respons
     if(student) {
       return res.status(401).json({
         success: false,
-        message: "This user is already exist."
+        message: "This user already exist."
       })
     }
-    req.headers.studentId = student.id as string
     next()
   } catch(error) {
     if (error instanceof ZodError) {

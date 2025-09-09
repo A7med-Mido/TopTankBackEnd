@@ -66,7 +66,7 @@ export const isTeacherAlreadyExistMiddleware = async (req: Request, res: Respons
     if(teacher) {
       return res.status(401).json({
         success: false,
-        message: "This user is already exist."
+        message: "This user already exist."
       })
     }
     next()

@@ -4,6 +4,7 @@ import TeacherModel from "../configs/models/TeacherSchema"
 import { decrypt } from "../auth/encryption"
 import StudentModel from "../configs/models/StudentSchema"
 
+
 // teacher registration
 export const teacherRegister = async (req: Request, res: Response) => {
   try {
@@ -36,7 +37,12 @@ export const deleteTeacher = async (req: Request, res: Response) => {
     const token = (req.headers.authorization as string).split(" ")[1]
     const { id } = decrypt(token)
     const teacher = await TeacherModel.findByIdAndDelete(id)
-    console.log(teacher)
+    if(!teacher) {
+      return res.status(400).json({
+        message: "This user doesn't exist anymore.",
+        success: false
+      })
+    }
     return res.status(200).json({
       message: "Your account has deleted successfully.",
       success: true
@@ -60,7 +66,7 @@ export const studentRegister = async(req: Request, res: Response) => {
     const userRole = studentData.user
     delete studentData.user
     studentData.password = hashPassword(studentData.password)
-    const { _id } = await TeacherModel.create(studentData)
+    const { _id } = await StudentModel.create(studentData)
     const token = encrypt({ phone: studentData.phone, id: _id.toString(), user: userRole })
     console.log(_id.toString());
 
@@ -86,13 +92,19 @@ export const deleteStudent = async (req: Request, res: Response) => {
     const { id } = decrypt(token)
     const student = await StudentModel.findByIdAndDelete(id)
     console.log(student)
+    if(!student) {
+      return res.status(400).json({
+        message: "This user doesn't exist anymore.",
+        success: false
+      })
+    }
     return res.status(200).json({
       message: "Your account has deleted successfully.",
       success: true
     })
   } catch(error) {
     return res.status(500).json({
-      message: "Internal server Error",
+      message: "Internal server Error.",
       success: false
     })
   }
