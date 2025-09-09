@@ -15,8 +15,6 @@ export const teacherRegister = async (req: Request, res: Response) => {
     teacherData.password = hashPassword(teacherData.password)
     const { _id } = await TeacherModel.create(teacherData)
     const token = encrypt({ phone: teacherData.phone, id: _id.toString(), user: userRole })
-    console.log(_id.toString());
-
     res.status(201).json({
       message: "You have registered successfully",
       success: true,
@@ -68,7 +66,6 @@ export const studentRegister = async(req: Request, res: Response) => {
     studentData.password = hashPassword(studentData.password)
     const { _id } = await StudentModel.create(studentData)
     const token = encrypt({ phone: studentData.phone, id: _id.toString(), user: userRole })
-    console.log(_id.toString());
 
     res.status(201).json({
       message: "You have registered successfully",
@@ -91,7 +88,6 @@ export const deleteStudent = async (req: Request, res: Response) => {
     const token = (req.headers.authorization as string).split(" ")[1]
     const { id } = decrypt(token)
     const student = await StudentModel.findByIdAndDelete(id)
-    console.log(student)
     if(!student) {
       return res.status(400).json({
         message: "This user doesn't exist anymore.",
