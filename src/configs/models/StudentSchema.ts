@@ -29,14 +29,17 @@ const student = new Schema<StudentDoc>({
   subscriptions: [KeysSchema],
   otp: {
     type: String,
-    required: true,
+    // required: true,
     default: "",
     max: 6,
     min: 6
   }
-}, { timestamps: true });
+}, { 
+  timestamps: true,
+  versionKey :false
+});
 
 
-const StudentModel = models.user || model<StudentDoc>('teacher', student);
+const StudentModel = models.student || model<StudentDoc>('student', student);
 
 export default StudentModel;

@@ -36,7 +36,7 @@ router.post("/register", async (req: Request, res: Response) => {
     }
 
     res.status(401).json({
-      success: true,
+      success: false,
       message: "You should set the role",
     });
 

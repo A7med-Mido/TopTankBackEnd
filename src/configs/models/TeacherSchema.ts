@@ -37,14 +37,17 @@ const teacher = new Schema<TeacherDoc>({
   courses: [CourseSchema],
   otp: {
     type: String,
-    required: true,
+    // required: true,
     default: "",
     min: 6,
     max: 6
   }
-},{ timestamps: true });
+},{ 
+  timestamps: true,
+  versionKey: false
+});
 
 
-const TeacherModel = models.user || model<TeacherDoc>('teacher', teacher);
+const TeacherModel = models.teacher || model<TeacherDoc>('teacher', teacher);
 
 export default TeacherModel;

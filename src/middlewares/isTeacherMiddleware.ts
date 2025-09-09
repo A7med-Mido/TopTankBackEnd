@@ -1,6 +1,6 @@
-import StudentModel from "../configs/models/StudentSchema"
 import { decrypt } from "../auth/encryption"
 import { Request, Response, NextFunction } from "express"
+import TeacherModel from "../configs/models/TeacherSchema"
 
 
 const isTeacherMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,8 +18,8 @@ const isTeacherMiddleware = async (req: Request, res: Response, next: NextFuncti
   }
   try {
     const { id, phone } = decrypt(token);
-    const student = await StudentModel.find({ id, phone })
-    if(!student) return res.status(401).json({ message: "This user is not authenticated" })
+    const teacher = await TeacherModel.find({ id, phone })
+    if(!teacher) return res.status(401).json({ message: "This user is not authenticated" })
     next()
   } catch (error) {
     return res.status(404).json({
