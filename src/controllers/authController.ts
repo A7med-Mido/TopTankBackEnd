@@ -1,14 +1,13 @@
 import { Request, Response } from "express"
 import { encrypt, hashPassword } from "../auth/encryption"
-import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zodValidators"
-import { ZodError } from "zod"
 import TeacherModel from "../configs/models/TeacherSchema"
+import { decrypt } from "../auth/encryption"
+import StudentModel from "../configs/models/StudentSchema"
 
 // teacher registration
 export const teacherRegister = async (req: Request, res: Response) => {
   try {
-    const userData = req.body
-    const teacherData = teacherSchema.parse(userData)
+    const teacherData = req.body
 
     const userRole = teacherData.user
     delete teacherData.user
@@ -24,27 +23,39 @@ export const teacherRegister = async (req: Request, res: Response) => {
     })
 
   } catch(error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({
-        success: false,
-        errors: invalidFields(error)
-      });
-    }
-    
     // Handle other errors
-    console.error("Unexpected error:", error);
     res.status(500).json({
       success: false,
       message: "Internal server error"
     });
   }
 }
+// delete teacher
+export const deleteTeacher = async (req: Request, res: Response) => {
+  try {
+    const token = (req.headers.authorization as string).split(" ")[1]
+    const { id } = decrypt(token)
+    const teacher = await TeacherModel.findByIdAndDelete(id)
+    console.log(teacher)
+    return res.status(200).json({
+      message: "Your account has deleted successfully.",
+      success: true
+    })
+  } catch(error) {
+    return res.status(500).json({
+      message: "Internal server Error",
+      success: false
+    })
+  }
+}
+
+
+
 
 // student registration
 export const studentRegister = async(req: Request, res: Response) => {
   try {
-    const userData = req.body
-    const studentData = studentSchema.parse(userData)
+    const studentData = req.body
 
     const userRole = studentData.user
     delete studentData.user
@@ -60,18 +71,29 @@ export const studentRegister = async(req: Request, res: Response) => {
     })
 
   } catch(error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({
-        success: false,
-        errors: invalidFields(error)
-      });
-    }
-    
-    // Handle other errors
-    console.error("Unexpected error:", error);
+    // Handle other Server errors
     res.status(500).json({
       success: false,
       message: "Internal server error"
     });
+  }
+}
+
+// delete Student
+export const deleteStudent = async (req: Request, res: Response) => {
+  try {
+    const token = (req.headers.authorization as string).split(" ")[1]
+    const { id } = decrypt(token)
+    const student = await StudentModel.findByIdAndDelete(id)
+    console.log(student)
+    return res.status(200).json({
+      message: "Your account has deleted successfully.",
+      success: true
+    })
+  } catch(error) {
+    return res.status(500).json({
+      message: "Internal server Error",
+      success: false
+    })
   }
 }

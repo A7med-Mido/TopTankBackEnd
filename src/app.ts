@@ -1,5 +1,5 @@
 import express,  { Response, Request, NextFunction } from "express"
-import registerRoute from "./routes/registerRoute";
+import registerRoute from "./routes/authRoute";
 import { encrypt, JWTPayload } from "./auth/encryption";
 import { verify } from "jsonwebtoken";
 

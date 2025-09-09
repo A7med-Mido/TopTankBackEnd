@@ -1,12 +1,12 @@
-import StudentModel from "../configs/models/StudentSchema"
 import { decrypt } from "../auth/encryption"
 import { Request, Response, NextFunction } from "express"
-import { studentSchema } from "./zodValidators"
+import TeacherModel from "../configs/models/TeacherSchema"
+import { teacherSchema } from "./zodValidators"
 import { ZodError } from "zod"
 import { invalidFields } from "./zodValidators"
-import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken"
 
-export const isStudentMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const isTeacherMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).send({
@@ -21,9 +21,9 @@ export const isStudentMiddleware = async (req: Request, res: Response, next: Nex
   }
   try {
     const { id, phone } = decrypt(token);
-    const student = await StudentModel.findOne({ id, phone })
-    if(!student) {
-      return res.status(401).json({ 
+    const teacher = await TeacherModel.find({ id, phone })
+    if(!teacher) {
+      return res.status(401).json({
         message: "This user is not authenticated",
         success: false
       })
@@ -51,8 +51,7 @@ export const isStudentMiddleware = async (req: Request, res: Response, next: Nex
   }
 }
 
-
-export const isStudentAlreadyExistMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const isTeacherAlreadyExistMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     return res.status(400).json({
       message: "Request body is empty or undefined"
@@ -61,16 +60,15 @@ export const isStudentAlreadyExistMiddleware = async (req: Request, res: Respons
 
   try {
     const userData = req.body
-    const { phone } = studentSchema.parse(userData)
+    const { phone } = teacherSchema.parse(userData)
 
-    const student = await StudentModel.findOne({ phone })
-    if(student) {
+    const teacher = await TeacherModel.findOne({ phone })
+    if(teacher) {
       return res.status(401).json({
         success: false,
         message: "This user is already exist."
       })
     }
-    req.headers.studentId = student.id as string
     next()
   } catch(error) {
     if (error instanceof ZodError) {
