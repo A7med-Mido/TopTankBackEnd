@@ -52,7 +52,7 @@ export const teacherLogin = async (req: Request, res: Response) => {
         success: false
       })
     }
-    if(!await verifyPassword({ password, storedHash: teacher.password})) {
+    if(!await verifyPassword({ password, storedHash: teacher.password })) {
       return res.status(401).json({
         message: "Wrong password.",
         success: false
