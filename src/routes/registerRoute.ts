@@ -1,14 +1,15 @@
 import { Router, Request, Response } from "express";
 import { ZodError } from "zod";
-import studentRegistration from "../controllers/studentRegistration";
-import teacherRegistration from "../controllers/teacherRegistration";
+import studentRegistration from "../controllers/studentController";
+import teacherRegistration from "../controllers/teacherController";
+import Status from "../patterns/statusNumber";
 
-const router: Router = Router();
+const registerRoute: Router = Router();
 
-router.post("/register", async (req: Request, res: Response) => {
+registerRoute.post("/register/teacher", async (req: Request, res: Response) => {
 
   if (!req.body || Object.keys(req.body).length === 0) {
-    return res.status(400).json({
+    return res.status(Status.badRequest).json({
       message: "Request body is empty or undefined"
     });
   }
@@ -19,7 +20,7 @@ router.post("/register", async (req: Request, res: Response) => {
 
     if(userData.user === "student") {
       const token = await studentRegistration(userData);
-      return res.status(201).json({
+      return res.status(Status.successfulRegistration).json({
         message: "You have registered successfully.",
         success: true,
         token
@@ -28,14 +29,14 @@ router.post("/register", async (req: Request, res: Response) => {
 
     if(userData.user === "teacher") {
       const token = await teacherRegistration(userData);
-      return res.status(201).json({
+      return res.status(Status.successfulRegistration).json({
         message: "You have registered successfully",
         success: true,
         token
       })
     }
 
-    res.status(401).json({
+    res.status(Status.badRequest).json({
       success: false,
       message: "You should set the role",
     });
@@ -43,7 +44,7 @@ router.post("/register", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof ZodError) {
       console.log("Validation errors:", error.issues);
-      return res.status(400).json({
+      return res.status(Status.badRequest).json({
         success: false,
         message: "Validation failed",
         errors: error.issues.map(err => ({
@@ -56,11 +57,13 @@ router.post("/register", async (req: Request, res: Response) => {
     
     // Handle other errors
     console.error("Unexpected error:", error);
-    res.status(500).json({
+    res.status(Status.internalServerError).json({
       success: false,
       message: "Internal server error"
     });
   }
 });
-const registrationRoute = router
-export default registrationRoute
+
+registerRoute.post("/register/student")
+
+export default registerRoute

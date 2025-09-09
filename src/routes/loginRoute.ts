@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
 import { ZodError } from "zod";
 
-const router: Router = Router();
+const loginRoute: Router = Router();
 
-router.post("/login", async (req: Request, res: Response) => {
+loginRoute.post("/login", async (req: Request, res: Response) => {
 
   try {
       
@@ -35,5 +35,5 @@ router.post("/login", async (req: Request, res: Response) => {
     });
   }
 });
-const loginRoute = router
+
 export default loginRoute

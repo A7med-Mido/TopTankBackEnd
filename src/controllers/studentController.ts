@@ -1,5 +1,5 @@
 import StudentModel from "../configs/models/StudentSchema";
-import { StudentInput, studentSchema } from "../types/zodValidation";
+import { StudentInput, studentSchema } from "../middlewares/zodValidation";
 import { encrypt, hashPassword } from "../auth/encryption";
 
 

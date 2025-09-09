@@ -1,7 +1,7 @@
 import { sign, verify } from "jsonwebtoken";
 import { randomInt, scryptSync, timingSafeEqual } from "crypto";
 import env from "../configs/env.config";
-import { UserRole } from "../types/zodValidation";
+import { UserRole } from "../middlewares/zodValidation";
 
 export type JWTPayload = {
   phone: string

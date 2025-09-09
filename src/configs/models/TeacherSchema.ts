@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import { TeacherInput } from "../../types/zodValidation";
+import { TeacherInput } from "../../middlewares/zodValidation";
 import CourseSchema from "./CourseSchema";
 
 interface TeacherDoc extends TeacherInput, Document {}

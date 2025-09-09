@@ -10,6 +10,9 @@ const VideoSchema = new Schema({
     type: String,
     required: true
   }, 
-}, { timestamps: true });
+}, { 
+  timestamps: true,
+  versionKey: false
+});
 
 export default VideoSchema

@@ -1,5 +1,5 @@
 import TeacherModel from "../configs/models/TeacherSchema";
-import { TeacherInput, teacherSchema } from "../types/zodValidation";
+import { TeacherInput, teacherSchema } from "../middlewares/zodValidation";
 import { encrypt, hashPassword } from "../auth/encryption";
 
 
