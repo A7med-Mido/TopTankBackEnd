@@ -2,6 +2,7 @@ import { sign, verify } from "jsonwebtoken";
 import { randomInt, scryptSync, timingSafeEqual } from "crypto";
 import env from "../configs/env.config";
 import { UserRole } from "../middlewares/zodValidators";
+import { hash, compare } from "bcrypt"
 
 export type JWTPayload = {
   phone: string
@@ -18,15 +19,20 @@ export const decrypt =  (token: string) => {
   return decoded
 };
 
-const keylen = 64; // 512-bit output
-export const hashPassword = (password: string) => {
-  const hash = scryptSync(password, env.SALT.toString(), keylen).toString('hex');
-  return hash
+export const hashPassword = async (password: string): Promise<string> => {
+  const hashedPassword = await hash(password, 10);
+  return hashedPassword
 };
-export const verifyPassword = (password: string, storedHash: string): boolean => {
-  const hashToVerify = scryptSync(password, env.SALT.toString(), keylen);
-  const storedHashBuffer = Buffer.from(storedHash, 'hex');
-  return timingSafeEqual(hashToVerify, storedHashBuffer);
+
+export const verifyPassword = async ({
+  password,
+  storedHash,
+}: {
+  password: string;
+  storedHash: string;
+}): Promise<boolean> => {
+
+  return await compare(password, storedHash);
 };
 
 

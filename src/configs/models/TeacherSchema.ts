@@ -9,6 +9,11 @@ const teacher = new Schema<TeacherDoc>({
     trim: true,
     unique: true
   },
+  username: {
+    type: String,
+    required: true,
+    trim: true
+  },
   image: {
     type: String,
     required: false,

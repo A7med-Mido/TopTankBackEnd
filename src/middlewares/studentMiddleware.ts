@@ -31,7 +31,6 @@ export const isStudentMiddleware = async (req: Request, res: Response, next: Nex
     next()
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      console.log('Token expired at:', error.expiredAt);
       return res.status(401).json({
         message: "The token has expired",
         success: false
@@ -79,8 +78,6 @@ export const isStudentAlreadyExistMiddleware = async (req: Request, res: Respons
       });
     }
     
-    // Handle other errors
-    console.error("Unexpected error:", error);
     return res.status(500).json({
       success: false,
       message: "Internal server error"
