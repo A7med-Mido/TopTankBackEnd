@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 /** --- Basic Fields --- **/
 export const usernameSchema = z
@@ -92,3 +92,16 @@ export type UserRole = z.infer<typeof userRole>
 export type TeacherInput = z.infer<typeof teacherSchema>;
 export type StudentInput = z.infer<typeof studentSchema>;
 export type CourseInput = z.infer<typeof courseSchema>;
+
+
+
+
+export const invalidFields = (error: ZodError) => {
+  const { issues } = error
+  
+  return issues.map(err => ({
+    field: err.path.join('.'),
+    message: err.message,
+    code: err.code
+  }))
+}

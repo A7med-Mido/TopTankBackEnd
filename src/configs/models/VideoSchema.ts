@@ -1,6 +1,5 @@
 import { Schema,  } from "mongoose"
 
-
 const VideoSchema = new Schema({
   vid: {
     type: String,

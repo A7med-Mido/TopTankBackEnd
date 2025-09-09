@@ -1,8 +1,6 @@
 import { Schema, model, models } from "mongoose";
-import { TeacherInput } from "../../middlewares/zodValidation";
+import { TeacherDoc } from "../../types/types";
 import CourseSchema from "./CourseSchema";
-
-interface TeacherDoc extends TeacherInput, Document {}
 
 const teacher = new Schema<TeacherDoc>({
   name: { 
@@ -46,7 +44,6 @@ const teacher = new Schema<TeacherDoc>({
   timestamps: true,
   versionKey: false
 });
-
 
 const TeacherModel = models.teacher || model<TeacherDoc>('teacher', teacher);
 

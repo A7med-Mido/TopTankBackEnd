@@ -1,8 +1,6 @@
 import { Schema, model, models } from "mongoose";
-import { StudentInput } from "../../middlewares/zodValidation";
+import { StudentDoc } from "../../types/types";
 import KeysSchema from "./CourseKeySchema";
-
-interface StudentDoc extends StudentInput, Document {}
 
 const student = new Schema<StudentDoc>({
   name: { 
@@ -38,7 +36,6 @@ const student = new Schema<StudentDoc>({
   timestamps: true,
   versionKey: false
 });
-
 
 const StudentModel = models.student || model<StudentDoc>('student', student);
 

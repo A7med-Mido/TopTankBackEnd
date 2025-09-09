@@ -1,7 +1,5 @@
 import { Schema } from "mongoose";
 
-
-
 const KeysSchema = new Schema({
   key: String,
   teacherUsername: String,
@@ -9,6 +7,5 @@ const KeysSchema = new Schema({
   timestamps: true,
   versionKey : false
 });
-
 
 export default KeysSchema
