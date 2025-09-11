@@ -3,7 +3,7 @@ import { encrypt, hashPassword, verifyPassword } from "../auth/encryption"
 import TeacherModel from "../configs/models/TeacherSchema"
 import { decrypt } from "../auth/encryption"
 import StudentModel from "../configs/models/StudentSchema"
-import { success, ZodError } from "zod"
+import { ZodError } from "zod"
 import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zodValidators"
 
 // teacher registration

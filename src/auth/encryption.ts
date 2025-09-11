@@ -1,5 +1,5 @@
 import { sign, verify } from "jsonwebtoken";
-import { randomInt, scryptSync, timingSafeEqual } from "crypto";
+import { randomInt } from "crypto";
 import env from "../configs/env.config";
 import { UserRole } from "../middlewares/zodValidators";
 import { hash, compare } from "bcrypt"
