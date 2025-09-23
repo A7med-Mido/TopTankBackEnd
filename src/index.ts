@@ -10,7 +10,7 @@ const httpServer = createServer(app);
 (async ()=> {
   try {
     await ConnectDB()
-    httpServer.listen(env.PORT.toString(), () => console.log("🚀 Server running on 3000"));
+    httpServer.listen(env.PORT, () => console.log("🚀 Server running on 3000"));
   } catch(error) {
     console.log(error)
   }
