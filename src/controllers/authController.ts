@@ -6,6 +6,7 @@ import StudentModel from "../configs/models/StudentSchema"
 import { ZodError } from "zod"
 import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zodValidators"
 
+
 // teacher registration
 export const teacherRegister = async (req: Request, res: Response) => {
   try {
@@ -182,6 +183,8 @@ export const deleteStudent = async (req: Request, res: Response) => {
     const token = (req.headers.authorization as string).split(" ")[1];
     const { id } = decrypt(token);
     const student = await StudentModel.findByIdAndDelete(id);
+
+
     if(!student) {
       return res.status(400).json({
         message: "This user doesn't exist anymore.",

@@ -19,3 +19,6 @@ export const optImage = async (imageFile: File) => {
     .withMetadata({ orientation: undefined })
     .toBuffer();
 };
+
+
+

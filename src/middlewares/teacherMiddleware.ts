@@ -61,6 +61,7 @@ export const isTeacherAlreadyExistMiddleware = async (req: Request, res: Respons
   }
 
   try {
+    
     const userData = req.body
     const { phone } = teacherSchema.parse(userData)
 
