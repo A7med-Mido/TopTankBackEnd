@@ -12,7 +12,6 @@ authRoute.post("/login/teacher", teacherLogin)
 authRoute.delete("/delete/teacher", isTeacherMiddleware, deleteTeacher)
 
 
-
 // Student Routes
 authRoute.post("/register/student", isStudentAlreadyExistMiddleware, studentRegister)
 authRoute.post("/login/teacher", studentLogin)

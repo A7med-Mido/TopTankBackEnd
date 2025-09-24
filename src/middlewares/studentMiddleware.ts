@@ -6,17 +6,20 @@ import { ZodError } from "zod"
 import { invalidFields } from "./zodValidators"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 
+
 export const isStudentMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).send({
-      message: "Auth header is missing"
+      message: "Auth header is missing",
+      success: false
     })
   }
   const token = authHeader.split(" ")[1]; // "Bearer <token>"
   if(!token) {
     return res.status(401).json({
-      message: "Missing JWT"
+      message: "Missing JWT",
+      success: false
     })
   }
   try {
@@ -54,7 +57,8 @@ export const isStudentMiddleware = async (req: Request, res: Response, next: Nex
 export const isStudentAlreadyExistMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     return res.status(400).json({
-      message: "Request body is empty or undefined"
+      message: "Request body is empty or undefined",
+      success: false
     });
   }
 
