@@ -21,3 +21,13 @@ export const getStudentData = async (req: Request, res: Response) => {
   }
 }
 
+export const postStudentProfilePicture = async (req: Request, res: Response) => {
+  try {
+    const token = (req.headers.authorization as string).split(" ")[1];
+    const { id } = decrypt(token);
+    
+
+  } catch(error) {
+
+  }
+}
