@@ -1,7 +1,14 @@
 import { Router } from "express";
-import { deleteStudent, deleteTeacher, studentLogin, studentRegister, teacherLogin, teacherRegister } from "../controllers/authController";
-import { isTeacherAlreadyExistMiddleware, isTeacherMiddleware } from "../middlewares/teacherMiddleware";
+import {isTeacherAlreadyExistMiddleware, isTeacherMiddleware } from "../middlewares/teacherMiddleware";
 import { isStudentAlreadyExistMiddleware, isStudentMiddleware } from "../middlewares/studentMiddleware";
+import {
+  deleteStudent,
+  deleteTeacher,
+  studentLogin,
+  studentRegister,
+  teacherLogin,
+  teacherRegister
+} from "../controllers/authController";
 
 
 const authRoute: Router = Router();

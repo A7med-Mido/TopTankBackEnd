@@ -11,7 +11,7 @@ export type JWTPayload = {
 };
 
 export const encrypt = ( { phone, id, user }: JWTPayload ) => {
-  return sign({ phone, id, user }, env.JWT_SECRET.toString(), { expiresIn: "30d" });
+  return sign({ phone, id, user }, env.JWT_SECRET.toString(), { expiresIn: "30d" })
 };
 
 export const decrypt =  (token: string) => {

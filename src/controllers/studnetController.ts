@@ -7,7 +7,7 @@ export const getStudentData = async (req: Request, res: Response) => {
   try {
     const token = (req.headers.authorization as string).split(" ")[1];
     const { id } = decrypt(token);
-    const student = await StudentModel.findByIdAndDelete(id);
+    const student = await StudentModel.findById(id).select("-password");
 
     return res.json({
       success: true,
@@ -20,3 +20,4 @@ export const getStudentData = async (req: Request, res: Response) => {
     })
   }
 }
+

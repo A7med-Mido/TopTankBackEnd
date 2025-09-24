@@ -6,9 +6,9 @@ const CloudsSchema = new Schema({
     required: true,
     trim: true
   },
-
 }, { 
   timestamps: true,
+  versionKey : false
 });
 
 export default CloudsSchema
