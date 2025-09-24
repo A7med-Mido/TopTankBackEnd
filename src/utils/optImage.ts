@@ -21,4 +21,3 @@ export const optImage = async (imageFile: File) => {
 };
 
 
-
