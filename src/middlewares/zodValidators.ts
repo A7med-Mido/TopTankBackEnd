@@ -55,7 +55,8 @@ export const teacherSchema = z.object({
   phone: phoneValidation,
   password: z
   .string()
-  .min(6, { message: "Short password, you need at least 6" }),
+  .min(9, { message: "Your password must be more than 12 chars." })
+  .max(24, { message: "Your password must be less than 24 chars." }),
   image: z.string().url().optional(),
   verified: z.boolean().default(false),
   followers: z.number().default(0),
@@ -79,7 +80,7 @@ export const studentSchema = z.object({
   .max(11, { message: "Wrong phone number." }),
   password: z
   .string()
-  .min(12, { message: "Your password must be more than 12 chars." })
+  .min(9, { message: "Your password must be more than 12 chars." })
   .max(24, { message: "Your password must be less than 24 chars." }),
   image: z.string().optional(),
   subscriptions: z.array(keysSchema).default([]).optional(),

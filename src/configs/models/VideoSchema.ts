@@ -1,4 +1,4 @@
-import { Schema,  } from "mongoose"
+import { Schema } from "mongoose"
 
 const VideoSchema = new Schema({
   vid: {

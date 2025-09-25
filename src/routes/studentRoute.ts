@@ -7,8 +7,8 @@ import fileUpload from "express-fileupload";
 const studentRoute: Router = Router();
 
 
-studentRoute.post("/pp/student", postStudentProfilePicture)
-
+studentRoute.post("/ppp/student", isStudentMiddleware, fileUpload(), postStudentProfilePicture)
+studentRoute.get("/student", isStudentMiddleware, )
 
 
 export default studentRoute
