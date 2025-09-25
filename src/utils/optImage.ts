@@ -21,3 +21,11 @@ export const optImage = async (imageFile: File) => {
 };
 
 
+export const writeImageFile = async () => {
+  try {
+
+    
+  } catch(error) {
+
+  }
+}
