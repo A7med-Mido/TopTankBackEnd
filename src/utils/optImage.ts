@@ -1,6 +1,8 @@
 import sharp from "sharp";
+import { writeFile } from "fs/promises";
+import path from "path";
 
-export const optImage = async (imageFile: File) => {
+const optImage = async (imageFile: File) => {
   const buffer = Buffer.from(await imageFile.arrayBuffer());
   return await sharp(buffer)
     .resize({
@@ -21,11 +23,14 @@ export const optImage = async (imageFile: File) => {
 };
 
 
-export const writeImageFile = async () => {
-  try {
+export const writeImageFile = async (id: string) => {
+
+  const publicPath = path.join(process.cwd(), "public");
+
+
+  // Generate a unique filename
+  const fileName = `${Date.now()}-${id}.webp`;
+  const filePath = path.join(publicPath, fileName);
 
     
-  } catch(error) {
-
-  }
 }
