@@ -2,7 +2,7 @@ import sharp from "sharp";
 import { writeFile } from "fs/promises";
 import path from "path";
 
-const optImage = async (imageFile: File) => {
+const optImage = async (imageFile: File): Promise<Buffer> => {
   const buffer = Buffer.from(await imageFile.arrayBuffer());
   return await sharp(buffer)
     .resize({
@@ -18,19 +18,19 @@ const optImage = async (imageFile: File) => {
       smartSubsample: true,
       nearLossless: true,
     })
-    .withMetadata({ orientation: undefined })
     .toBuffer();
 };
 
 
-export const writeImageFile = async (id: string) => {
+export const writeImageFile = async ({ id, imageFile }:{ id: string, imageFile: File }) => {
 
-  const publicPath = path.join(process.cwd(), "public");
-
-
+  const image = await optImage(imageFile)
   // Generate a unique filename
+  const publicPath = path.join(process.cwd(), "public");
   const fileName = `${Date.now()}-${id}.webp`;
   const filePath = path.join(publicPath, fileName);
 
-    
+  await writeFile(filePath, image)
+
+  return `/public/${fileName}`
 }
