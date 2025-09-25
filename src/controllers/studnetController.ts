@@ -28,6 +28,10 @@ export const postStudentProfilePicture = async (req: Request, res: Response) => 
     
 
   } catch(error) {
+    return res.status(400).json({
+      message: "internal server error",
+      success: false
+    })
 
   }
 }
