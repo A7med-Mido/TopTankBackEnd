@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import StudentModel from "../configs/models/Student.model";
 import { decrypt } from "../utils/helpers/jwt.helper";
-import { removeImageFile, writeImageFile } from "../utils/fs";
+import { removeImageFile, writeImageFile } from "../utils/fs/fs";
 import { UploadedFile } from "express-fileupload";
 import { JWTPayload } from "../types/auth.types";
 

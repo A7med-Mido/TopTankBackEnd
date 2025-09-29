@@ -1,4 +1,4 @@
-import { optImage } from "./optImage";
+import { optImage } from "./optImage.fs";
 import { writeFile, unlink } from "fs/promises";
 import path from "path";
 
