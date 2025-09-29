@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
-import { TeacherDoc } from "../../types/types";
-import CourseSchema from "./CourseSchema";
+import { TeacherDoc } from "../../types/models.types";
+import CourseSchema from "../schemas/Course.schema";
 
 const teacher = new Schema<TeacherDoc>({
   name: { 

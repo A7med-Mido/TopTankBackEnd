@@ -1,26 +1,26 @@
 import { Request, Response } from "express"
-import { encrypt, hashPassword, verifyPassword } from "../auth/encryption"
-import TeacherModel from "../configs/models/TeacherSchema"
-import { decrypt } from "../auth/encryption"
-import StudentModel from "../configs/models/StudentSchema"
+import { hashPassword, verifyPassword } from "../utils/helpers/pass.helper"
+import { encrypt } from "../utils/helpers/jwt.helper"
+import { JWTPayload } from "../types/auth.types"
+import TeacherModel from "../configs/models/Teacher.model"
+import StudentModel from "../configs/models/Student.model"
 import { ZodError } from "zod"
-import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zodValidators"
+import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zod.validator"
 import { HTTP_STATUS } from "../utils/constants/http-status"
-
-
 
 // User Registration
 export const userRegister = async(req: Request, res: Response) => {
   try {
     const userData = req.body
     const { userRole } = req.params
+
     if( userRole === "student" ) {
       studentSchema.parse(userData);
       userData.password = await hashPassword(userData.password)
       const { _id } = await StudentModel.create(userData)
-      const token = encrypt({ phone: userData.phone, id: _id.toString(), user: userRole })
+      const token = encrypt({ phone: userData.phone, id: _id.toString(), userRole })
   
-      res.status(201).json({
+      res.status(HTTP_STATUS.CREATED).json({
         message: "You have registered successfully.",
         success: true,
         token
@@ -30,9 +30,9 @@ export const userRegister = async(req: Request, res: Response) => {
       teacherSchema.parse(userData);
       userData.password = await hashPassword(userData.password)
       const { _id } = await TeacherModel.create(userData)
-      const token = encrypt({ phone: userData.phone, id: _id.toString(), user: userRole })
+      const token = encrypt({ phone: userData.phone, id: _id.toString(),  userRole })
   
-      res.status(201).json({
+      res.status(HTTP_STATUS.CREATED).json({
         message: "You have registered successfully.",
         success: true,
         token
@@ -44,8 +44,7 @@ export const userRegister = async(req: Request, res: Response) => {
     })
 
   } catch(error) {
-    // Handle other Server errors
-    res.status(500).json({
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Internal server error."
     });
@@ -64,22 +63,21 @@ export const userLogin = async (req: Request, res: Response) => {
           { phone: phone }
         ]
       })
-      console.log(student)
       if(!student) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           message: "No such user with this phone number.",
           success: false
         })
       }
       if(!await verifyPassword({ password, storedHash: student.password})) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           message: "Wrong password.",
           success: false
         })
       }
-      const token = encrypt({ phone: student.phone, user: userRole, id: student._id.toString() })
+      const token = encrypt({ phone: student.phone, id: student._id.toString(), userRole })
 
-      res.status(201).json({
+      res.status(HTTP_STATUS.CREATED).json({
         message: "You have logged in successfully.",
         success: true,
         token
@@ -92,38 +90,35 @@ export const userLogin = async (req: Request, res: Response) => {
           { phone: phone }
         ]
       })
-      console.log(teacher)
       if(!teacher) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           message: "No such user with this phone number.",
           success: false
         })
       }
       if(!await verifyPassword({ password, storedHash: teacher.password})) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
           message: "Wrong password.",
           success: false
         })
       }
-      const token = encrypt({ phone: teacher.phone, user: userRole, id: teacher._id.toString() })
+      const token = encrypt({ phone: teacher.phone, id: teacher._id.toString(), userRole, })
 
-      res.status(201).json({
+      res.status(HTTP_STATUS.CREATED).json({
         message: "You have logged in successfully.",
         success: true,
         token
       })
     }
-  
-  
   } catch (error) {
     if (error instanceof ZodError) {
-      return res.status(422).json({
+      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
         success: false,
         errors: invalidFields(error)
       });
     }
     
-    return res.status(500).json({
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Internal server error"
     });
@@ -133,36 +128,35 @@ export const userLogin = async (req: Request, res: Response) => {
 // delete Student
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const token = (req.headers.authorization as string).split(" ")[1];
-    const { id, user } = decrypt(token);
-    if(user === "student") {
+    const { id, userRole } = (req as any).user as JWTPayload
+    if(userRole === "student") {
       const student = await StudentModel.findByIdAndDelete(id);
       if(!student) {
-        return res.status(400).json({
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
           message: "This user doesn't exist anymore.",
           success: false
         });
       }
-      return res.status(200).json({
+      return res.status(HTTP_STATUS.OK).json({
         message: "Your account has deleted successfully.",
         success: true
       });
     }
-    if( user === "teacher") {
+    if(userRole === "teacher") {
       const teacher = await TeacherModel.findByIdAndDelete(id);
       if(!teacher) {
-        return res.status(400).json({
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
           message: "This user doesn't exist anymore.",
           success: false
         });
       }
-      return res.status(200).json({
+      return res.status(HTTP_STATUS.OK).json({
         message: "Your account has deleted successfully.",
         success: true
       });
     }
   } catch(error) {
-    return res.status(500).json({
+    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Internal server Error.",
       success: false
     })

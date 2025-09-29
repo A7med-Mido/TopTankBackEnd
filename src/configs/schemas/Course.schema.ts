@@ -1,5 +1,5 @@
 import { Schema } from "mongoose"
-import VideoSchema from "./VideoSchema";
+import VideoSchema from "./Video.schema";
 
 const CourseSchema = new Schema({
   key: {

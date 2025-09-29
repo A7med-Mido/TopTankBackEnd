@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import StudentModel from "../configs/models/StudentSchema";
-import { decrypt } from "../auth/encryption";
+import StudentModel from "../configs/models/Student.model";
+import { decrypt } from "../utils/helpers/jwt.helper";
 import { removeImageFile, writeImageFile } from "../utils/fs";
 import { UploadedFile } from "express-fileupload";
+import { JWTPayload } from "../types/auth.types";
 
 export const getStudentData = async (req: Request, res: Response) => {
   try {
-    const token = (req.headers.authorization as string).split(" ")[1];
-    const { id } = decrypt(token);
+    const { id, userRole } = (req as any).user as JWTPayload
     const student = await StudentModel.findById(id).select("-password -otp -phone -_id -CreatedAt -UpdatedAt");
 
     return res.status(200).json({

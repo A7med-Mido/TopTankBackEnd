@@ -1,25 +1,7 @@
-import sharp from "sharp";
+import { optImage } from "./optImage";
 import { writeFile, unlink } from "fs/promises";
 import path from "path";
 
-const optImage = async (imageFile: Buffer): Promise<Buffer> => {
-  const buffer = imageFile
-  return await sharp(buffer)
-    .resize({
-      width: 400,
-      height: 400,
-      fit: "cover",
-      position: "center",
-      withoutEnlargement: true,
-    })
-    .webp({
-      quality: 65,       
-      effort: 6,          
-      smartSubsample: true,
-      nearLossless: true,
-    })
-    .toBuffer();
-};
 
 
 export const writeImageFile = async ({ id, imageFile }:{ id: string, imageFile: Buffer }) => {

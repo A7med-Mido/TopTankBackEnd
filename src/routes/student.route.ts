@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { getStudentData, postStudentProfilePicture } from "../controllers/studentController";
-import { isEndUserMiddleware } from "../middlewares/endUserMiddleware";
+import { getStudentData, postStudentProfilePicture } from "../controllers/user.controller";
+import { isEndUserMiddleware } from "../middlewares/endUser.middleware";
 import fileUpload from "express-fileupload";
 
 

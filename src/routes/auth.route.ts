@@ -2,12 +2,12 @@ import { Router } from "express";
 import {
   isEndUserExistMiddleware,
   isEndUserMiddleware
-} from "../middlewares/endUserMiddleware";
+} from "../middlewares/endUser.middleware";
 import {
   deleteUser,
   userRegister,
   userLogin
-} from "../controllers/authController";
+} from "../controllers/auth.contorller";
 
 
 const authRoute: Router = Router();

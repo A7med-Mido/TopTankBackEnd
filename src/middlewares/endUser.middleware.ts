@@ -1,10 +1,10 @@
-import StudentModel from "../configs/models/StudentSchema"
-import TeacherModel from "../configs/models/TeacherSchema"
-import { decrypt } from "../auth/encryption"
+import StudentModel from "../configs/models/Student.model"
+import TeacherModel from "../configs/models/Teacher.model"
+import { decrypt } from "../utils/helpers/jwt.helper"
 import { Request, Response, NextFunction } from "express"
-import { studentSchema, teacherSchema } from "./zodValidators"
+import { studentSchema, teacherSchema } from "./zod.validator"
 import { ZodError } from "zod"
-import { invalidFields } from "./zodValidators"
+import { invalidFields } from "./zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 import { HTTP_STATUS } from "../utils/constants/http-status"
 
@@ -24,28 +24,10 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
     })
   }
   try {
-    const { id, phone, user } = decrypt(token);
+    const payload = decrypt(token);
+    
 
-    if(user === "student") {
-      // query from the db for fast development testing
-      const student = await StudentModel.find({ id, phone })
-      if(!student) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({ 
-          message: "This user is not authenticated.",
-          success: false
-        })
-      }
-    }
-    if(user === "teacher") {
-      // query from the db for fast development testing
-      const teacher = await TeacherModel.find({ id, phone })
-      if(!teacher) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({ 
-          message: "This user is not authenticated.",
-          success: false
-        })
-      }
-    }
+    (req as any).user = payload
     next()
   } catch (error) {
     if (error instanceof TokenExpiredError) {
