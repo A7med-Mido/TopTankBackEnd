@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { getStudentData, postStudentProfilePicture } from "../controllers/studentController";
-import { isStudentMiddleware } from "../middlewares/studentMiddleware";
+import { isEndUserMiddleware } from "../middlewares/endUserMiddleware";
 import fileUpload from "express-fileupload";
 
 
@@ -9,12 +9,12 @@ const studentRoute: Router = Router();
 
 studentRoute.post(
   "/ppp/student",
-  isStudentMiddleware,
+  isEndUserMiddleware,
   fileUpload(),
   postStudentProfilePicture
 )
 
-studentRoute.get("/getStudentData", isStudentMiddleware, getStudentData)
-studentRoute.post("/:sub", isStudentMiddleware)
+studentRoute.get("/getStudentData", isEndUserMiddleware, getStudentData)
+studentRoute.post("/:sub", isEndUserMiddleware)
 
 export default studentRoute

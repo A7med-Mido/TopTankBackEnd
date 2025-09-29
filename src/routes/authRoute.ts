@@ -1,33 +1,22 @@
 import { Router } from "express";
 import {
-  isTeacherAlreadyExistMiddleware,
-  isTeacherMiddleware
-} from "../middlewares/teacherMiddleware";
+  isEndUserExistMiddleware,
+  isEndUserMiddleware
+} from "../middlewares/endUserMiddleware";
 import {
-  isStudentAlreadyExistMiddleware,
-  isStudentMiddleware
-} from "../middlewares/studentMiddleware";
-import {
-  deleteStudent,
-  deleteTeacher,
-  studentLogin,
-  studentRegister,
-  teacherLogin,
-  teacherRegister
+  deleteUser,
+  userRegister,
+  userLogin
 } from "../controllers/authController";
 
 
 const authRoute: Router = Router();
 
-// Teacher Routes
-authRoute.post("/register/teacher", isTeacherAlreadyExistMiddleware, teacherRegister);
-authRoute.post("/login/teacher", teacherLogin);
-authRoute.delete("/delete/teacher", isTeacherMiddleware, deleteTeacher);
+
+authRoute.post("/register/:userRole", isEndUserExistMiddleware, userRegister);
+authRoute.post("/login/:userRole", userLogin);
+authRoute.delete("/delete/user", isEndUserMiddleware, deleteUser);
 
 
-// Student Routes
-authRoute.post("/register/student", isStudentAlreadyExistMiddleware, studentRegister);
-authRoute.post("/login/student", studentLogin);
-authRoute.delete("/delete/student", isStudentMiddleware, deleteStudent);
 
 export default authRoute

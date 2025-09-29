@@ -88,6 +88,8 @@ export const studentSchema = z.object({
   user: userRole
 });
 
+export const paramSchema = z.enum(["teacher", "student"]).nonoptional()
+
 /** --- Infer Types --- **/
 export type UserRole = z.infer<typeof userRole>
 export type TeacherInput = z.infer<typeof teacherSchema>;
