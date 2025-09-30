@@ -1,49 +1,52 @@
+import { TFunction } from "i18next";
 import { z, ZodError } from "zod";
 
 /** --- Basic Fields --- **/
 export const usernameSchema = z
   .string()
   .regex(/^[A-Za-z0-9-]{4,20}$/, {
-    message:
-      "Username must be 4–20 chars and contain only letters, numbers, and hyphens (-).",
+    message: "errors.username.invalid",
   });
 
 /** --- UserRole --- **/
 export const userRole = z
-  .enum(["teacher", "student"], { message: "This use must be either student or a teacher." })
-  .optional()
+  .enum(["teacher", "student"], {
+    message: "errors.userRole.invalid",
+  })
+  .optional();
 
-/** --- UserRole --- **/
-const nameValidation = z
+/** --- Name Validation --- **/
+const nameValidation = z.string().max(50, {
+  message: "errors.name.too_long",
+});
+
+/** --- Phone Validation --- **/
+const phoneValidation = z
   .string()
-  .max(50, { message: "Your name must be less than 50 chars." })
-
-const phoneValidation = z.
-  string()
-  .min(11, { message: "Wrong phone number." })
-  .max(11, { message: "Wrong phone number." })
+  .min(11, { message: "errors.phone.invalid" })
+  .max(11, { message: "errors.phone.invalid" });
 
 /** --- Video Schema --- **/
 export const videoSchema = z.object({
-  vid: z.string().url(),
-  name: z
-  .string()
-  .max(170, { message: "The name must be less than 170 chars" }),
+  vid: z.string().url({ message: "errors.video.invalid_url" }),
+  name: z.string().max(170, {
+    message: "errors.video.name_too_long",
+  }),
 });
 
 /** --- Course Schema --- **/
 export const courseSchema = z.object({
   key: z.string(),
-  name: z
-  .string()
-  .max(150, { message: "Use a shorter name for that course, less than 150 chars." }),
-  price: z.number().min(0).nonnegative(),
+  name: z.string().max(150, {
+    message: "errors.course.name_too_long",
+  }),
+  price: z.number().min(0, { message: "errors.course.invalid_price" }).nonnegative(),
   free: z.boolean(),
-  offer: z.number().min(0).nonnegative().optional(),
-  thumbNail: z.string().url(),
-  description: z
-  .string()
-  .max(350, { message: "The description must be less than 350 chars." }),
+  offer: z.number().min(0, { message: "errors.course.invalid_offer" }).nonnegative().optional(),
+  thumbNail: z.string().url({ message: "errors.course.invalid_thumbnail" }),
+  description: z.string().max(350, {
+    message: "errors.course.description_too_long",
+  }),
   subscriptions: z.number().nonnegative(),
   videos: z.array(videoSchema),
 });
@@ -54,16 +57,16 @@ export const teacherSchema = z.object({
   username: usernameSchema,
   phone: phoneValidation,
   password: z
-  .string()
-  .min(9, { message: "Your password must be more than 12 chars." })
-  .max(24, { message: "Your password must be less than 24 chars." }),
-  image: z.string().url().optional(),
+    .string()
+    .min(9, { message: "errors.password.too_short" })
+    .max(24, { message: "errors.password.too_long" }),
+  image: z.string().url({ message: "errors.teacher.invalid_image" }).optional(),
   verified: z.boolean().default(false),
   followers: z.number().default(0),
   balance: z.number().default(0),
   courses: z.array(courseSchema).default([]),
-  otp: z.string().min(6).max(6).default(""),
-  user: userRole
+  otp: z.string().min(6, { message: "errors.teacher.otp_invalid" }).max(6, { message: "errors.teacher.otp_invalid" }).default(""),
+  user: userRole,
 });
 
 /** --- Student Schema --- **/
@@ -75,20 +78,21 @@ export const keysSchema = z.object({
 export const studentSchema = z.object({
   name: nameValidation,
   phone: z
-  .string()
-  .min(11, { message: "Wrong phone number." })
-  .max(11, { message: "Wrong phone number." }),
+    .string()
+    .min(11, { message: "errors.phone.invalid" })
+    .max(11, { message: "errors.phone.invalid" }),
   password: z
-  .string()
-  .min(9, { message: "Your password must be more than 12 chars." })
-  .max(24, { message: "Your password must be less than 24 chars." }),
+    .string()
+    .min(9, { message: "errors.password.too_short" })
+    .max(24, { message: "errors.password.too_long" }),
   image: z.string().optional(),
   subscriptions: z.array(keysSchema).default([]).optional(),
-  otp: z.string().min(6).max(6).default("").optional(),
-  user: userRole
+  otp: z.string().min(6, { message: "errors.student.otp_invalid" }).max(6, { message: "errors.student.otp_invalid" }).default("").optional(),
+  user: userRole,
 });
 
-export const paramSchema = z.enum(["teacher", "student"]).nonoptional()
+
+
 
 /** --- Infer Types --- **/
 export type UserRole = z.infer<typeof userRole>
@@ -99,12 +103,12 @@ export type CourseInput = z.infer<typeof courseSchema>;
 
 
 
-export const invalidFields = (error: ZodError) => {
+export const zodErrorFormatter = (error: ZodError, t: TFunction) => {
   const { issues } = error
   
   return issues.map(err => ({
     field: err.path.join('.'),
-    message: err.message,
+    message: t(err.message as any),
     code: err.code
   }))
 }

@@ -28,5 +28,41 @@ export const ar = {
     passwordMin: "يجب أن تكون كلمة المرور أكثر من 12 حرفًا.",
     passwordMax: "يجب أن تكون كلمة المرور أقل من 24 حرفًا.",
     otp: "رمز التحقق OTP يجب أن يتكون من 6 أرقام فقط.",
+  },
+  errors: {
+    username: {
+      invalid: "Username must be 4 to 20 characters and contain only letters, numbers, or hyphens (-)."
+    },
+    userRole: {
+      invalid: "Role must be either student or teacher."
+    },
+    name: {
+      too_long: "Name must not exceed 50 characters."
+    },
+    phone: {
+      invalid: "Phone number is invalid."
+    },
+    video: {
+      invalid_url: "Video URL is invalid.",
+      name_too_long: "Video name must not exceed 170 characters."
+    },
+    course: {
+      name_too_long: "Use a shorter course name, less than 150 characters.",
+      invalid_price: "Course price must be a non-negative integer.",
+      invalid_offer: "Offer must be a non-negative integer.",
+      invalid_thumbnail: "Thumbnail URL is invalid.",
+      description_too_long: "Description must not exceed 350 characters."
+    },
+    password: {
+      too_short: "Password must be longer than 12 characters.",
+      too_long: "Password must not exceed 24 characters."
+    },
+    teacher: {
+      invalid_image: "Teacher image must be a valid URL.",
+      otp_invalid: "OTP must consist of exactly 6 digits."
+    },
+    student: {
+      otp_invalid: "OTP must consist of exactly 6 digits."
+    }
   }
 };

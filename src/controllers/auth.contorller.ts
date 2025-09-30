@@ -5,7 +5,7 @@ import { JWTPayload } from "../types/auth.types"
 import TeacherModel from "../configs/models/Teacher.model"
 import StudentModel from "../configs/models/Student.model"
 import { ZodError } from "zod"
-import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zod.validator"
+import { zodErrorFormatter, studentSchema, teacherSchema } from "../middlewares/zod.validator"
 import { STATUS } from "../utils/constants/http-status"
 
 // User Registration
@@ -114,7 +114,7 @@ export const userLogin = async (req: Request, res: Response) => {
     if (error instanceof ZodError) {
       return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
         success: false,
-        errors: invalidFields(error)
+        errors: zodErrorFormatter(error, req.t)
       });
     }
     

@@ -4,7 +4,7 @@ import { decrypt } from "../utils/helpers/jwt.helper"
 import { Request, Response, NextFunction } from "express"
 import { studentSchema, teacherSchema } from "./zod.validator"
 import { ZodError } from "zod"
-import { invalidFields } from "./zod.validator"
+import { zodErrorFormatter } from "./zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 import { STATUS } from "../utils/constants/http-status"
 
@@ -84,7 +84,7 @@ export const isEndUserExistMiddleware = async (req: Request, res: Response, next
     if (error instanceof ZodError) {
       return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
         success: false,
-        errors: invalidFields(error)
+        errors: zodErrorFormatter(error, req.t)
       });
     }
     
