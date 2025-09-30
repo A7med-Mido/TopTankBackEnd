@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import StudentModel from "../configs/models/Student.model";
-import { decrypt } from "../utils/helpers/jwt.helper";
 import { removeImageFile, writeImageFile } from "../utils/fs/fs";
 import { UploadedFile } from "express-fileupload";
 import { JWTPayload } from "../types/auth.types";
 import TeacherModel from "../configs/models/Teacher.model";
-import { HTTP_STATUS } from "../utils/constants/http-status";
+import { STATUS } from "../utils/constants/http-status";
 
 export const getUserData = async (req: Request, res: Response) => {
   try {
@@ -13,7 +12,7 @@ export const getUserData = async (req: Request, res: Response) => {
 
     if(userRole === "student") {
       const student = await StudentModel.findById(id).select("-password -otp -phone -_id -CreatedAt -UpdatedAt");
-      return res.status(HTTP_STATUS.OK).json({
+      return res.status(STATUS.OK).json({
         student,
         success: true
       })
@@ -21,18 +20,18 @@ export const getUserData = async (req: Request, res: Response) => {
 
     if(userRole === "teacher") {
       const teacher = await TeacherModel.findById(id).select("-password -otp -phone -_id -CreatedAt -UpdatedAt");
-      return res.status(HTTP_STATUS.OK).json({
+      return res.status(STATUS.OK).json({
         teacher,
         success: true
       })
     }
 
-    return res.status(HTTP_STATUS.BAD_REQUEST).json({
+    return res.status(STATUS.BAD_REQUEST).json({
       message: "Wrong URL.",
       success: false
     })
   } catch(error) {
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Internal code Error.",
       success: false
     })
@@ -45,7 +44,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
     const { id, userRole } = (req as any).user as JWTPayload
 
     if (!req.files || !req.files.image) {
-      return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "No image file uploaded.", success: false });
+      return res.status(STATUS.BAD_REQUEST).json({ message: "No image file uploaded.", success: false });
     }
     const imageData = (req.files.image as UploadedFile).data
 
@@ -55,7 +54,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
       const isRemoved = await removeImageFile(image)
       
       if(!isRemoved) {
-        return res.status(HTTP_STATUS.NOT_FOUND).json({
+        return res.status(STATUS.NOT_FOUND).json({
           message: "The file doesn't exists.",
           success: false
         })
@@ -69,7 +68,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
         { new: true }
       );
 
-      return res.status(HTTP_STATUS.OK).json({
+      return res.status(STATUS.OK).json({
         message: "Image uploaded successfully.",
         success: true,
       });
@@ -80,7 +79,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
       const isRemoved = await removeImageFile(image)
       
       if(!isRemoved) {
-        return res.status(HTTP_STATUS.NOT_FOUND).json({
+        return res.status(STATUS.NOT_FOUND).json({
           message: "The file doesn't exists.",
           success: false
         })
@@ -94,14 +93,14 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
         { new: true }
       );
 
-      return res.status(HTTP_STATUS.OK).json({
+      return res.status(STATUS.OK).json({
         message: "Image uploaded successfully.",
         success: true,
       });
     }
 
   } catch (error) {
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Internal server error.",
       success: false,
     });

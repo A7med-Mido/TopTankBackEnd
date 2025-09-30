@@ -6,7 +6,7 @@ import TeacherModel from "../configs/models/Teacher.model"
 import StudentModel from "../configs/models/Student.model"
 import { ZodError } from "zod"
 import { invalidFields, studentSchema, teacherSchema } from "../middlewares/zod.validator"
-import { HTTP_STATUS } from "../utils/constants/http-status"
+import { STATUS } from "../utils/constants/http-status"
 
 // User Registration
 export const userRegister = async(req: Request, res: Response) => {
@@ -20,7 +20,7 @@ export const userRegister = async(req: Request, res: Response) => {
       const { _id } = await StudentModel.create(userData)
       const token = encrypt({ phone: userData.phone, id: _id.toString(), userRole })
   
-      res.status(HTTP_STATUS.CREATED).json({
+      res.status(STATUS.CREATED).json({
         message: "You have registered successfully.",
         success: true,
         token
@@ -32,19 +32,19 @@ export const userRegister = async(req: Request, res: Response) => {
       const { _id } = await TeacherModel.create(userData)
       const token = encrypt({ phone: userData.phone, id: _id.toString(),  userRole })
   
-      res.status(HTTP_STATUS.CREATED).json({
+      res.status(STATUS.CREATED).json({
         message: "You have registered successfully.",
         success: true,
         token
       })
     }
-    return res.status(HTTP_STATUS.BAD_REQUEST).json({
+    return res.status(STATUS.BAD_REQUEST).json({
       message: "You might hit the wrong URL.",
       success: false
     })
 
   } catch(error) {
-    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+    res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Internal server error."
     });
@@ -64,20 +64,20 @@ export const userLogin = async (req: Request, res: Response) => {
         ]
       })
       if(!student) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        return res.status(STATUS.UNAUTHORIZED).json({
           message: "No such user with this phone number.",
           success: false
         })
       }
       if(!await verifyPassword({ password, storedHash: student.password})) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        return res.status(STATUS.UNAUTHORIZED).json({
           message: "Wrong password.",
           success: false
         })
       }
       const token = encrypt({ phone: student.phone, id: student._id.toString(), userRole })
 
-      res.status(HTTP_STATUS.CREATED).json({
+      res.status(STATUS.CREATED).json({
         message: "You have logged in successfully.",
         success: true,
         token
@@ -91,20 +91,20 @@ export const userLogin = async (req: Request, res: Response) => {
         ]
       })
       if(!teacher) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        return res.status(STATUS.UNAUTHORIZED).json({
           message: "No such user with this phone number.",
           success: false
         })
       }
       if(!await verifyPassword({ password, storedHash: teacher.password})) {
-        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        return res.status(STATUS.UNAUTHORIZED).json({
           message: "Wrong password.",
           success: false
         })
       }
       const token = encrypt({ phone: teacher.phone, id: teacher._id.toString(), userRole, })
 
-      res.status(HTTP_STATUS.CREATED).json({
+      res.status(STATUS.CREATED).json({
         message: "You have logged in successfully.",
         success: true,
         token
@@ -112,13 +112,13 @@ export const userLogin = async (req: Request, res: Response) => {
     }
   } catch (error) {
     if (error instanceof ZodError) {
-      return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
+      return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
         success: false,
         errors: invalidFields(error)
       });
     }
     
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Internal server error"
     });
@@ -132,12 +132,12 @@ export const deleteUser = async (req: Request, res: Response) => {
     if(userRole === "student") {
       const student = await StudentModel.findByIdAndDelete(id);
       if(!student) {
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        return res.status(STATUS.BAD_REQUEST).json({
           message: "This user doesn't exist anymore.",
           success: false
         });
       }
-      return res.status(HTTP_STATUS.OK).json({
+      return res.status(STATUS.OK).json({
         message: "Your account has deleted successfully.",
         success: true
       });
@@ -145,18 +145,18 @@ export const deleteUser = async (req: Request, res: Response) => {
     if(userRole === "teacher") {
       const teacher = await TeacherModel.findByIdAndDelete(id);
       if(!teacher) {
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        return res.status(STATUS.BAD_REQUEST).json({
           message: "This user doesn't exist anymore.",
           success: false
         });
       }
-      return res.status(HTTP_STATUS.OK).json({
+      return res.status(STATUS.OK).json({
         message: "Your account has deleted successfully.",
         success: true
       });
     }
   } catch(error) {
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Internal server Error.",
       success: false
     })

@@ -6,19 +6,19 @@ import { studentSchema, teacherSchema } from "./zod.validator"
 import { ZodError } from "zod"
 import { invalidFields } from "./zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
-import { HTTP_STATUS } from "../utils/constants/http-status"
+import { STATUS } from "../utils/constants/http-status"
 
 export const isEndUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+    return res.status(STATUS.UNAUTHORIZED).json({
       message: "Auth header is missing.",
       success: false
     })
   }
   const token = authHeader.split(" ")[1]; // "Bearer <token>"
   if(!token) {
-    return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+    return res.status(STATUS.UNAUTHORIZED).json({
       message: "Missing JWT.",
       success: false
     })
@@ -31,18 +31,18 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
     next()
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+      return res.status(STATUS.UNAUTHORIZED).json({
         message: "The token has expired.",
         success: false
       })
     }
     if (error instanceof JsonWebTokenError) {
-      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+      return res.status(STATUS.UNAUTHORIZED).json({
         message: error.message,
         success: false
       })
     }
-    return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       message: "Internal server error.",
       success: false
     })
@@ -58,7 +58,7 @@ export const isEndUserExistMiddleware = async (req: Request, res: Response, next
       const { phone } = studentSchema.parse(userData)
       const student = await StudentModel.findOne({ phone })
       if(student) {
-        return res.status(401).json({
+        return res.status(STATUS.UNAUTHORIZED).json({
           success: false,
           message: "This user already exist."
         })
@@ -69,26 +69,26 @@ export const isEndUserExistMiddleware = async (req: Request, res: Response, next
       const { phone } = teacherSchema.parse(userData)
       const teacher = await TeacherModel.findOne({ phone })
       if(teacher) {
-        return res.status(401).json({
+        return res.status(STATUS.UNAUTHORIZED).json({
           success: false,
           message: "This user already exist."
         })
       }
       next()
     }
-    return res.status(HTTP_STATUS.BAD_REQUEST).json({
+    return res.status(STATUS.BAD_REQUEST).json({
       message: "",
       success: false
     })
   } catch(error) {
     if (error instanceof ZodError) {
-      return res.status(422).json({
+      return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
         success: false,
         errors: invalidFields(error)
       });
     }
     
-    return res.status(500).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Internal server error"
     });

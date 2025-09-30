@@ -1,5 +1,5 @@
 
-export const HTTP_STATUS = {
+export const STATUS = {
   OK: 200,
   CREATED: 201,
   NO_CONTENT: 204,

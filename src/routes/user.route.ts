@@ -14,7 +14,7 @@ userRoute.post(
   postUserProfilePicture
 )
 
-userRoute.get("/userData/userRole", isEndUserMiddleware, getUserData)
-userRoute.post("/:sub", isEndUserMiddleware)
+userRoute.get("/userData/:userRole", isEndUserMiddleware, getUserData)
+userRoute.post("student/:sub", isEndUserMiddleware)
 
 export default userRoute
