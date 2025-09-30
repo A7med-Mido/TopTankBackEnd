@@ -5,6 +5,8 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   PORT: z.string().transform(Number),
   SALT: z.string(),
+  GMAIL_APP_PASSWORD: z.string(),
+  GMAIL_ADDR: z.email()
 });
 
 const env = envSchema.parse(process.env);

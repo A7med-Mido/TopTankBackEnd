@@ -1,7 +1,7 @@
 import express from "express"
 import authRoute from "./routes/auth.route";
 import path from "path";
-import studentRoute from "./routes/student.route";
+import studentRoute from "./routes/user.route";
 
 
 const app = express();

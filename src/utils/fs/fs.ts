@@ -29,7 +29,6 @@ export const removeImageFile = async (filePath: string) => {
     // Attempt to delete
     await unlink(absolutePath);
 
-    console.log(`✅ Image removed: ${absolutePath}`);
     return true
   } catch (error: any) {
     if (error.code === "ENOENT") {
