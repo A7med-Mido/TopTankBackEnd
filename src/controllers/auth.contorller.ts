@@ -21,7 +21,7 @@ export const userRegister = async(req: Request, res: Response) => {
       const token = encrypt({ phone: userData.phone, id: _id.toString(), userRole })
   
       res.status(STATUS.CREATED).json({
-        message: "You have registered successfully.",
+        message: req.t("auth.registered"),
         success: true,
         token
       })
@@ -33,20 +33,20 @@ export const userRegister = async(req: Request, res: Response) => {
       const token = encrypt({ phone: userData.phone, id: _id.toString(),  userRole })
   
       res.status(STATUS.CREATED).json({
-        message: "You have registered successfully.",
+        message: req.t("auth.registered"),
         success: true,
         token
       })
     }
     return res.status(STATUS.BAD_REQUEST).json({
-      message: "You might hit the wrong URL.",
+      message: req.t("common.wrongParams"),
       success: false
     })
 
   } catch(error) {
     res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "Internal server error."
+      message: req.t("common.internalServerError")
     });
   }
 }

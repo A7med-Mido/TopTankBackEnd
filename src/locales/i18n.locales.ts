@@ -1,21 +1,26 @@
-import i18next from "i18next";
-import Backend from "i18next-fs-backend";
-import middleware from "i18next-http-middleware";
-import path from "path";
+import i18n from 'i18next';
+import Backend from 'i18next-fs-backend';
+import middleware from 'i18next-http-middleware';
+import path from 'path';
+import { en } from "./en/translation";
+import { ar } from "./ar/translation";
 
-i18next
+export const resources = {
+  en: { translation: en },
+  ar: { translation: ar },
+};
+
+export type TranslationKeys = keyof typeof en;
+
+
+i18n
   .use(Backend)
   .use(middleware.LanguageDetector)
   .init({
+    resources,
     fallbackLng: "en",
-    preload: ["en", "ar"], // Add more langs here
-    backend: {
-      loadPath: path.join(__dirname, "../../locales/{{lng}}/translation.json"),
-    },
-    detection: {
-      order: ["header"], // detect from Accept-Language
-      caches: false,
-    },
+    preload: ["en", "ar"],
+    interpolation: { escapeValue: false },
   });
 
-export default i18next;
+export default i18n;
