@@ -4,6 +4,13 @@ node_modules/
 # Environment variables (secrets, API keys, DB passwords, etc.)
 .env
 
+# Ignore everything in the public directory
+public/*
+
+# Except these two files
+!public/TopTankDiagram.png
+!public/TopTankImage.png
+
 # Logs (runtime logs you don’t want in Git)
 logs
 *.log
