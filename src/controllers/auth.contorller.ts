@@ -65,20 +65,20 @@ export const userLogin = async (req: Request, res: Response) => {
       })
       if(!student) {
         return res.status(STATUS.UNAUTHORIZED).json({
-          message: "No such user with this phone number.",
+          message: req.t("user.notFoundByPhoneNumber"),
           success: false
         })
       }
       if(!await verifyPassword({ password, storedHash: student.password})) {
         return res.status(STATUS.UNAUTHORIZED).json({
-          message: "Wrong password.",
+          message: req.t("validation.wrongPassword"),
           success: false
         })
       }
       const token = encrypt({ phone: student.phone, id: student._id.toString(), userRole })
 
       res.status(STATUS.CREATED).json({
-        message: "You have logged in successfully.",
+        message: req.t("auth.loggedIn"),
         success: true,
         token
       })
@@ -92,20 +92,20 @@ export const userLogin = async (req: Request, res: Response) => {
       })
       if(!teacher) {
         return res.status(STATUS.UNAUTHORIZED).json({
-          message: "No such user with this phone number.",
+          message: req.t("user.notFoundByPhoneNumber"),
           success: false
         })
       }
       if(!await verifyPassword({ password, storedHash: teacher.password})) {
         return res.status(STATUS.UNAUTHORIZED).json({
-          message: "Wrong password.",
+          message: req.t("validation.wrongPassword"),
           success: false
         })
       }
       const token = encrypt({ phone: teacher.phone, id: teacher._id.toString(), userRole, })
 
       res.status(STATUS.CREATED).json({
-        message: "You have logged in successfully.",
+        message: req.t("auth.loggedIn"),
         success: true,
         token
       })
@@ -120,7 +120,7 @@ export const userLogin = async (req: Request, res: Response) => {
     
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "Internal server error"
+      message: req.t("common.internalServerError")
     });
   }
 }
@@ -133,12 +133,12 @@ export const deleteUser = async (req: Request, res: Response) => {
       const student = await StudentModel.findByIdAndDelete(id);
       if(!student) {
         return res.status(STATUS.BAD_REQUEST).json({
-          message: "This user doesn't exist anymore.",
+          message: req.t("user.noUserAnymore"),
           success: false
         });
       }
       return res.status(STATUS.OK).json({
-        message: "Your account has deleted successfully.",
+        message: req.t("user.deleted"),
         success: true
       });
     }
@@ -146,18 +146,18 @@ export const deleteUser = async (req: Request, res: Response) => {
       const teacher = await TeacherModel.findByIdAndDelete(id);
       if(!teacher) {
         return res.status(STATUS.BAD_REQUEST).json({
-          message: "This user doesn't exist anymore.",
+          message: req.t("user.noUserAnymore"),
           success: false
         });
       }
       return res.status(STATUS.OK).json({
-        message: "Your account has deleted successfully.",
+        message: req.t("user.deleted"),
         success: true
       });
     }
   } catch(error) {
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      message: "Internal server Error.",
+      message: req.t("common.internalServerError"),
       success: false
     })
   }

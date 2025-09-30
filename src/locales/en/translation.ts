@@ -7,17 +7,22 @@ export const en = {
     invalidToken: "Invalid token.",
     registered: "You have registered successfully.",
     loggedIn: "You have logged in successfully.",
+    alreadyExist: "This user already exists."
   },
   user: {
-    notFound: "This user doesn't exist anymore.",
+    notFoundByPhoneNumber: "No such user with phone number.",
     deleted: "Your account has been deleted successfully.",
     imageUploaded: "Image uploaded successfully.",
+    noUserAnymore: "The user Doesn't exist anymore."
   },
   common: {
     wrongParams: "Wrong Params.",
-    internalServerError: "Internal server error."
+    internalServerError: "Internal server error.",
+    noFileImageUploaded: "No file image uploaded.",
+    fileNotInServer: "The file doesn't exists."
   },
     validation: {
+    wrongPassword: "Wrong Password",
     username: "Username must be 4–20 chars and contain only letters, numbers, and hyphens (-).",
     userRole: "User must be either student or teacher.",
     name: "Your name must be less than 50 chars.",

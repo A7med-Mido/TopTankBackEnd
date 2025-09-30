@@ -12,14 +12,14 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(STATUS.UNAUTHORIZED).json({
-      message: "Auth header is missing.",
+      message: req.t("auth.missingAuthHeader"),
       success: false
     })
   }
   const token = authHeader.split(" ")[1]; // "Bearer <token>"
   if(!token) {
     return res.status(STATUS.UNAUTHORIZED).json({
-      message: "Missing JWT.",
+      message: req.t("auth.missingJWT"),
       success: false
     })
   }
@@ -32,7 +32,7 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       return res.status(STATUS.UNAUTHORIZED).json({
-        message: "The token has expired.",
+        message: req.t("auth.expiredToken"),
         success: false
       })
     }
@@ -43,7 +43,7 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
       })
     }
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      message: "Internal server error.",
+      message: req.t("common.internalServerError"),
       success: false
     })
   }
@@ -60,7 +60,7 @@ export const isEndUserExistMiddleware = async (req: Request, res: Response, next
       if(student) {
         return res.status(STATUS.UNAUTHORIZED).json({
           success: false,
-          message: "This user already exist."
+          message: req.t("auth.alreadyExist")
         })
       }
       next()
@@ -71,13 +71,13 @@ export const isEndUserExistMiddleware = async (req: Request, res: Response, next
       if(teacher) {
         return res.status(STATUS.UNAUTHORIZED).json({
           success: false,
-          message: "This user already exist."
+          message: req.t("auth.alreadyExist")
         })
       }
       next()
     }
     return res.status(STATUS.BAD_REQUEST).json({
-      message: "",
+      message: req.t("common.wrongParams"),
       success: false
     })
   } catch(error) {
@@ -90,7 +90,7 @@ export const isEndUserExistMiddleware = async (req: Request, res: Response, next
     
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "Internal server error"
+      message: req.t("common.internalServerError")
     });
   }
 }

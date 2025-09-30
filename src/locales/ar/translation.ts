@@ -7,17 +7,22 @@ export const ar = {
     invalidToken: "رمز غير صالح.",
     registered: "تم تسجيلك بنجاح.",
     loggedIn: "تم تسجيل الدخول بنجاح.",
+    alreadyExist: "هذا المستخدم بالفعل موجود."
   },
   user: {
-    notFound: "هذا المستخدم لم يعد موجودًا.",
+    notFoundByPhoneNumber: " لا يوجد مستخدم بهذا الرقم.",
     deleted: "تم حذف حسابك بنجاح.",
     imageUploaded: "تم رفع الصورة بنجاح.",
+    noUserAnymore: "المستخمد لم يعد موجواً."
   },
   common: {
     wrongParams: "عنوان خطئ.",
-    internalServerError: "خطأ في السرفر."
+    internalServerError: "خطأ في السرفر.",
+    noFileImageUploaded: "لا يوجد ملف متوفر.",
+    fileNotInServer: "الملف غير موجود."
   },
   validation: {
+    wrongPassword: "كلمة السر خاطئه.",
     username: "اسم المستخدم يجب أن يكون من 4 إلى 20 حرفًا ويحتوي فقط على أحرف وأرقام وشرطات (-).",
     userRole: "المستخدم يجب أن يكون طالبًا أو مدرسًا.",
     name: "يجب أن يكون اسمك أقل من 50 حرفًا.",

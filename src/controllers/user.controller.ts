@@ -27,12 +27,12 @@ export const getUserData = async (req: Request, res: Response) => {
     }
 
     return res.status(STATUS.BAD_REQUEST).json({
-      message: "Wrong URL.",
+      message: req.t("common.wrongParams"),
       success: false
     })
   } catch(error) {
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      message: "Internal code Error.",
+      message: req.t("common.internalServerError"),
       success: false
     })
   }
@@ -44,7 +44,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
     const { id, userRole } = (req as any).user as JWTPayload
 
     if (!req.files || !req.files.image) {
-      return res.status(STATUS.BAD_REQUEST).json({ message: "No image file uploaded.", success: false });
+      return res.status(STATUS.BAD_REQUEST).json({ message: req.t("common.noFileImageUploaded"), success: false });
     }
     const imageData = (req.files.image as UploadedFile).data
 
@@ -55,7 +55,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
       
       if(!isRemoved) {
         return res.status(STATUS.NOT_FOUND).json({
-          message: "The file doesn't exists.",
+          message: req.t("common.fileNotInServer"),
           success: false
         })
       }
@@ -69,7 +69,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
       );
 
       return res.status(STATUS.OK).json({
-        message: "Image uploaded successfully.",
+        message: req.t("user.imageUploaded"),
         success: true,
       });
     }
@@ -80,7 +80,7 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
       
       if(!isRemoved) {
         return res.status(STATUS.NOT_FOUND).json({
-          message: "The file doesn't exists.",
+          message: req.t("common.fileNotInServer"),
           success: false
         })
       }
@@ -94,33 +94,17 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
       );
 
       return res.status(STATUS.OK).json({
-        message: "Image uploaded successfully.",
+        message: req.t("user.imageUploaded"),
         success: true,
       });
     }
 
   } catch (error) {
     return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      message: "Internal server error.",
+      message: req.t("common.internalServerError"),
       success: false,
     });
   }
 };
 
-export const subNewCourse = async (req: Request, res: Response) => {
-  try {
-    const { id, userRole } = (req as any).user as JWTPayload
-
-
-    res.status(200).json({
-      message: "Subscribed successfully.",
-
-    })
-  } catch(error) {
-    return res.status(500).json({
-      message: "internal server error.",
-      success: false
-    })
-  }
-}
 
