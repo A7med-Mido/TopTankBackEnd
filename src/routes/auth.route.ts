@@ -1,21 +1,21 @@
 import { Router } from "express";
 import {
-  isEndUserExistMiddleware,
-  isEndUserMiddleware
-} from "../middlewares/endUser.middleware";
+  isUserExistMiddleware,
+  isUserMiddleware
+} from "../middlewares/auth.middleware";
 import {
   deleteUser,
   userRegister,
   userLogin
-} from "../controllers/auth.contorller";
+} from "../controllers/auth.controller";
 
 
 const authRoute: Router = Router();
 
 
-authRoute.post("/register/:userRole", isEndUserExistMiddleware, userRegister);
+authRoute.post("/register/:userRole", isUserExistMiddleware, userRegister);
 authRoute.post("/login/:userRole", userLogin);
-authRoute.delete("/delete/user", isEndUserMiddleware, deleteUser);
+authRoute.delete("/delete/user", isUserMiddleware, deleteUser);
 
 
 

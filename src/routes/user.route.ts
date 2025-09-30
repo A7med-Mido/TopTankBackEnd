@@ -1,20 +1,18 @@
 import { Router } from "express";
 import { getUserData, postUserProfilePicture } from "../controllers/user.controller";
-import { isEndUserMiddleware } from "../middlewares/endUser.middleware";
+import { isUserMiddleware } from "../middlewares/auth.middleware";
 import fileUpload from "express-fileupload";
-
 
 const userRoute: Router = Router();
 
-
 userRoute.post(
   "/ppp/:userRole",
-  isEndUserMiddleware,
+  isUserMiddleware,
   fileUpload(),
   postUserProfilePicture
 )
 
-userRoute.get("/userData/:userRole", isEndUserMiddleware, getUserData)
-userRoute.post("student/:sub", isEndUserMiddleware)
+userRoute.get("/userData/:userRole", isUserMiddleware, getUserData)
+userRoute.post("student/:sub", isUserMiddleware)
 
 export default userRoute

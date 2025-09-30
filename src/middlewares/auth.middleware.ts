@@ -8,7 +8,7 @@ import { zodErrorFormatter } from "./zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 import { STATUS } from "../utils/constants/http-status"
 
-export const isEndUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const isUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(STATUS.UNAUTHORIZED).json({
@@ -25,8 +25,6 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
   }
   try {
     const payload = decrypt(token);
-    
-
     (req as any).user = payload
     next()
   } catch (error) {
@@ -49,7 +47,7 @@ export const isEndUserMiddleware = async (req: Request, res: Response, next: Nex
   }
 }
 
-export const isEndUserExistMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const isUserExistMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userData = req.body
     const { userRole } = req.params
