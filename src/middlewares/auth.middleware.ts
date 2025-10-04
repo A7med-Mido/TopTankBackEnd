@@ -2,12 +2,13 @@ import StudentModel from "../configs/models/Student.model"
 import TeacherModel from "../configs/models/Teacher.model"
 import { decrypt } from "../utils/helpers/jwt.helper"
 import { Request, Response, NextFunction } from "express"
-import { studentSchema, teacherSchema } from "./zod.validator"
+import { adminSchema, studentSchema, teacherSchema } from "./zod.validator"
 import { ZodError } from "zod"
 import { zodErrorFormatter } from "./zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 import { STATUS } from "../utils/constants/http-status"
 import { JWTPayload } from "../types/auth.types"
+import AdminModel from "../configs/models/Admin.model"
 
 export const isUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
@@ -67,6 +68,17 @@ export const isUserExistMiddleware = async (req: Request, res: Response, next: N
       const { phone } = teacherSchema.parse(userData)
       const teacher = await TeacherModel.findOne({ phone })
       if(teacher) {
+        return res.status(STATUS.UNAUTHORIZED).json({
+          success: false,
+          message: req.t("auth.alreadyExist")
+        })
+      }
+      next()
+    }
+    if(userRole === "admin") {
+      const { phone } = adminSchema.parse(userData)
+      const admin = await AdminModel.findOne({ phone })
+      if(admin) {
         return res.status(STATUS.UNAUTHORIZED).json({
           success: false,
           message: req.t("auth.alreadyExist")

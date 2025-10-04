@@ -4,7 +4,12 @@ import { JWTPayload } from "../../types/auth.types";
 
 
 export const encrypt = ( { phone, id, userRole }: JWTPayload ) => {
-  return sign({ phone, id, userRole }, env.JWT_SECRET.toString(), { expiresIn: "30d" })
+
+  return sign(
+    { phone, id, userRole },
+    env.JWT_SECRET.toString(),
+    { expiresIn: userRole === "admin"? "5h": "90d" }
+  )
 };
 
 export const decrypt =  (token: string) => {

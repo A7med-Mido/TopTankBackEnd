@@ -10,7 +10,7 @@ export const usernameSchema = z
 
 /** --- UserRole --- **/
 export const userRole = z
-  .enum(["teacher", "student"], {
+  .enum(["teacher", "student", "admin"], {
     message: "errors.userRole.invalid",
   })
   .optional();
@@ -91,14 +91,33 @@ export const studentSchema = z.object({
   user: userRole,
 });
 
+export const adminSchema = z.object({
+  email: z.email(),
+  phone: z
+    .string()
+    .min(11, { message: "errors.phone.invalid" })
+    .max(11, { message: "errors.phone.invalid" }),
+  otp: z.string().min(6, { message: "errors.student.otp_invalid" }).max(6, { message: "errors.student.otp_invalid" }).default("").optional(),
+  user: userRole,
+});
+
+
+
+export const cloudSchema = z.object({
+  ip: z.union([z.string().ipv4(), z.string().ipv6()])
+});
+
+
 
 
 
 /** --- Infer Types --- **/
 export type UserRole = z.infer<typeof userRole>
+export type AdminInput = z.infer<typeof adminSchema>;
 export type TeacherInput = z.infer<typeof teacherSchema>;
 export type StudentInput = z.infer<typeof studentSchema>;
 export type CourseInput = z.infer<typeof courseSchema>;
+export type CloudInput = z.infer<typeof cloudSchema>;
 
 
 
