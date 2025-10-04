@@ -1,5 +1,5 @@
 import "i18next";
-import { en } from "../locales/en/translation";
+import { en } from "../locales/en";
 import { JWTPayload } from "./auth.types";
 
 declare module "i18next" {
