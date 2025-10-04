@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Model } from "mongoose";
 import { StudentDoc } from "../../types/models.types";
 import CourseKeysSchema from "../schemas/CourseKey.schema";
 
@@ -37,6 +37,7 @@ const student = new Schema<StudentDoc>({
   versionKey: false
 });
 
-const StudentModel = models.student || model<StudentDoc>('student', student);
+const StudentModel = (models.student as Model<StudentDoc>) || model<StudentDoc>("student", student);
+
 
 export default StudentModel;

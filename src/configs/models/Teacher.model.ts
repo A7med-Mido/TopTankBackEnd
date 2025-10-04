@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Model, Schema, model, models } from "mongoose";
 import { TeacherDoc } from "../../types/models.types";
 import CourseSchema from "../schemas/Course.schema";
 
@@ -50,6 +50,6 @@ const teacher = new Schema<TeacherDoc>({
   versionKey: false
 });
 
-const TeacherModel = models.teacher || model<TeacherDoc>('teacher', teacher);
+const TeacherModel = (models.teacher as Model<TeacherDoc>) || model<TeacherDoc>('teacher', teacher);
 
 export default TeacherModel;

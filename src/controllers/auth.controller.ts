@@ -17,7 +17,7 @@ export const userRegister = async(req: Request, res: Response) => {
       studentSchema.parse(userData);
       userData.password = await hashPassword(userData.password)
       const { _id } = await StudentModel.create(userData)
-      const token = encrypt({ phone: userData.phone, id: _id.toString(), userRole })
+      const token = encrypt({ phone: userData.phone, id: String(_id), userRole })
   
       return res.status(STATUS.CREATED).json({
         message: req.t("auth.registered"),
@@ -29,7 +29,7 @@ export const userRegister = async(req: Request, res: Response) => {
       teacherSchema.parse(userData);
       userData.password = await hashPassword(userData.password)
       const { _id } = await TeacherModel.create(userData)
-      const token = encrypt({ phone: userData.phone, id: _id.toString(),  userRole })
+      const token = encrypt({ phone: userData.phone, id: String(_id),  userRole })
   
       return res.status(STATUS.CREATED).json({
         message: req.t("auth.registered"),
@@ -74,7 +74,8 @@ export const userLogin = async (req: Request, res: Response) => {
           success: false
         })
       }
-      const token = encrypt({ phone: student.phone, id: student._id.toString(), userRole })
+
+      const token = encrypt({ phone: student.phone, id: String(student._id), userRole })
 
       return res.status(STATUS.CREATED).json({
         message: req.t("auth.loggedIn"),
@@ -101,7 +102,7 @@ export const userLogin = async (req: Request, res: Response) => {
           success: false
         })
       }
-      const token = encrypt({ phone: teacher.phone, id: teacher._id.toString(), userRole, })
+      const token = encrypt({ phone: teacher.phone, id: String(teacher._id), userRole, })
 
       return res.status(STATUS.CREATED).json({
         message: req.t("auth.loggedIn"),
