@@ -1,4 +1,4 @@
-import { UserRole } from "../middlewares/zod.validator";
+import { UserRole } from "../zod/zod.validator";
 
 export type JWTPayload = {
   phone: string

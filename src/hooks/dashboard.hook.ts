@@ -1,5 +1,5 @@
 import axios from "axios";
-import CloudModel from "../configs/models/Cloud.model";
+import CloudModel from "../database/models/Cloud.model";
 
 export const fetchCloudsData = async ({
 

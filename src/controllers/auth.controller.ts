@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
 import { hashPassword, verifyPassword } from "../utils/helpers/pass.helper"
 import { encrypt } from "../utils/helpers/jwt.helper"
-import TeacherModel from "../configs/models/Teacher.model"
-import StudentModel from "../configs/models/Student.model"
+import TeacherModel from "../database/models/Teacher.model"
+import StudentModel from "../database/models/Student.model"
 import { ZodError } from "zod"
-import { zodErrorFormatter, studentSchema, teacherSchema } from "../middlewares/zod.validator"
+import { zodErrorFormatter, studentSchema, teacherSchema } from "../zod/zod.validator"
 import { STATUS } from "../utils/constants/http-status"
 
 // User Registration
@@ -128,7 +128,7 @@ export const userLogin = async (req: Request, res: Response) => {
 // delete Student
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id, userRole } = req.user!
+    const { id, userRole } = req.user
     
     if(userRole === "student") {
       const student = await StudentModel.findByIdAndDelete(id);

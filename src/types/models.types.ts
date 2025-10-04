@@ -1,4 +1,4 @@
-import { AdminInput, CloudInput, StudentInput, TeacherInput } from "../middlewares/zod.validator";
+import { AdminInput, CloudInput, StudentInput, TeacherInput } from "../zod/zod.validator";
 import { Document } from "mongoose";
 
 export interface StudentDoc extends StudentInput, Document {}

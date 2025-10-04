@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import StudentModel from "../configs/models/Student.model";
+import StudentModel from "../database/models/Student.model";
 import { removeImageFile, writeImageFile } from "../utils/fs/fs";
 import { UploadedFile } from "express-fileupload";
-import TeacherModel from "../configs/models/Teacher.model";
+import TeacherModel from "../database/models/Teacher.model";
 import { STATUS } from "../utils/constants/http-status";
 
 export const getUserData = async (req: Request, res: Response) => {

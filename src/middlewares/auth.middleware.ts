@@ -1,14 +1,14 @@
-import StudentModel from "../configs/models/Student.model"
-import TeacherModel from "../configs/models/Teacher.model"
+import StudentModel from "../database/models/Student.model"
+import TeacherModel from "../database/models/Teacher.model"
 import { decrypt } from "../utils/helpers/jwt.helper"
 import { Request, Response, NextFunction } from "express"
-import { adminSchema, studentSchema, teacherSchema } from "./zod.validator"
+import { adminSchema, studentSchema, teacherSchema } from "../zod/zod.validator"
 import { ZodError } from "zod"
-import { zodErrorFormatter } from "./zod.validator"
+import { zodErrorFormatter } from "../zod/zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 import { STATUS } from "../utils/constants/http-status"
 import { JWTPayload } from "../types/auth.types"
-import AdminModel from "../configs/models/Admin.model"
+import AdminModel from "../database/models/Admin.model"
 
 export const isUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
