@@ -49,14 +49,16 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
 
     if(userRole === "student") {
     
-      const { image } = await StudentModel.findById(id)
-      const isRemoved = await removeImageFile(image)
-      
-      if(!isRemoved) {
-        return res.status(STATUS.NOT_FOUND).json({
-          message: req.t("common.fileNotInServer"),
-          success: false
-        })
+      const { image } = await StudentModel.findById(id).orFail();
+      if(image) {
+        const isRemoved = await removeImageFile(image)
+        
+        if(!isRemoved) {
+          return res.status(STATUS.NOT_FOUND).json({
+            message: req.t("common.fileNotInServer"),
+            success: false
+          })
+        }
       }
       
       const imageUrl = await writeImageFile({ id, imageFile: imageData });
@@ -74,15 +76,18 @@ export const postUserProfilePicture = async (req: Request, res: Response) => {
     }
     if(userRole === "teacher") {
     
-      const { image } = await TeacherModel.findById(id)
-      const isRemoved = await removeImageFile(image)
-      
-      if(!isRemoved) {
-        return res.status(STATUS.NOT_FOUND).json({
-          message: req.t("common.fileNotInServer"),
-          success: false
-        })
+      const { image } = await TeacherModel.findById(id).orFail();
+      if(image) {
+        const isRemoved = await removeImageFile(image)
+        
+        if(!isRemoved) {
+          return res.status(STATUS.NOT_FOUND).json({
+            message: req.t("common.fileNotInServer"),
+            success: false
+          })
+        }
       }
+
       
       const imageUrl = await writeImageFile({ id, imageFile: imageData });
       
