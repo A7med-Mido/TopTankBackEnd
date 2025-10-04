@@ -7,6 +7,7 @@ import { ZodError } from "zod"
 import { zodErrorFormatter } from "./zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
 import { STATUS } from "../utils/constants/http-status"
+import { JWTPayload } from "../types/auth.types"
 
 export const isUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
@@ -24,8 +25,7 @@ export const isUserMiddleware = async (req: Request, res: Response, next: NextFu
     })
   }
   try {
-    const payload = decrypt(token);
-    (req as any).user = payload
+    req.user = decrypt(token) as JWTPayload
     next()
   } catch (error) {
     if (error instanceof TokenExpiredError) {

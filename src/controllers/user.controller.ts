@@ -2,13 +2,12 @@ import { Request, Response } from "express";
 import StudentModel from "../configs/models/Student.model";
 import { removeImageFile, writeImageFile } from "../utils/fs/fs";
 import { UploadedFile } from "express-fileupload";
-import { JWTPayload } from "../types/auth.types";
 import TeacherModel from "../configs/models/Teacher.model";
 import { STATUS } from "../utils/constants/http-status";
 
 export const getUserData = async (req: Request, res: Response) => {
   try {
-    const { id, userRole } = (req as any).user as JWTPayload
+    const { id, userRole } = req.user
 
     if(userRole === "student") {
       const student = await StudentModel.findById(id).select("-password -otp -phone -_id -CreatedAt -UpdatedAt");
@@ -41,7 +40,7 @@ export const getUserData = async (req: Request, res: Response) => {
 
 export const postUserProfilePicture = async (req: Request, res: Response) => {
   try {
-    const { id, userRole } = (req as any).user as JWTPayload
+    const { id, userRole } = req.user
 
     if (!req.files || !req.files.image) {
       return res.status(STATUS.BAD_REQUEST).json({ message: req.t("common.noFileImageUploaded"), success: false });

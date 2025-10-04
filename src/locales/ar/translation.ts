@@ -1,4 +1,3 @@
-
 export const ar = {
   auth: {
     missingAuthHeader: "رأس التوثيق مفقود.",
@@ -7,67 +6,67 @@ export const ar = {
     invalidToken: "رمز غير صالح.",
     registered: "تم تسجيلك بنجاح.",
     loggedIn: "تم تسجيل الدخول بنجاح.",
-    alreadyExist: "هذا المستخدم بالفعل موجود."
+    alreadyExist: "هذا المستخدم موجود بالفعل."
   },
   user: {
-    notFoundByPhoneNumber: " لا يوجد مستخدم بهذا الرقم.",
+    notFoundByPhoneNumber: "لا يوجد مستخدم بهذا الرقم.",
     deleted: "تم حذف حسابك بنجاح.",
     imageUploaded: "تم رفع الصورة بنجاح.",
-    noUserAnymore: "المستخمد لم يعد موجواً."
+    noUserAnymore: "المستخدم لم يعد موجوداً."
   },
   common: {
-    wrongParams: "عنوان خطئ.",
-    internalServerError: "خطأ في السرفر.",
-    noFileImageUploaded: "لا يوجد ملف متوفر.",
-    fileNotInServer: "الملف غير موجود."
+    wrongParams: "معطيات غير صحيحة.",
+    internalServerError: "حدث خطأ في الخادم.",
+    noFileImageUploaded: "لا يوجد ملف متاح للرفع.",
+    fileNotInServer: "الملف غير موجود على الخادم."
   },
   validation: {
-    wrongPassword: "كلمة السر خاطئه.",
+    wrongPassword: "كلمة المرور غير صحيحة.",
     username: "اسم المستخدم يجب أن يكون من 4 إلى 20 حرفًا ويحتوي فقط على أحرف وأرقام وشرطات (-).",
-    userRole: "المستخدم يجب أن يكون طالبًا أو مدرسًا.",
-    name: "يجب أن يكون اسمك أقل من 50 حرفًا.",
-    phone: "رقم الهاتف غير صحيح.",
-    videoName: "يجب أن يكون الاسم أقل من 170 حرفًا.",
+    userRole: "دور المستخدم يجب أن يكون طالبًا أو مدرسًا.",
+    name: "يجب أن يكون الاسم أقل من 50 حرفًا.",
+    phone: "رقم الهاتف غير صالح.",
+    videoName: "يجب أن يكون اسم الفيديو أقل من 170 حرفًا.",
     courseName: "استخدم اسمًا أقصر للدورة، أقل من 150 حرفًا.",
-    description: "يجب أن يكون الوصف أقل من 350 حرفًا.",
-    passwordMin: "يجب أن تكون كلمة المرور أكثر من 12 حرفًا.",
+    description: "الوصف يجب أن يكون أقل من 350 حرفًا.",
+    passwordMin: "يجب أن تكون كلمة المرور أطول من 12 حرفًا.",
     passwordMax: "يجب أن تكون كلمة المرور أقل من 24 حرفًا.",
-    otp: "رمز التحقق OTP يجب أن يتكون من 6 أرقام فقط.",
+    otp: "رمز التحقق (OTP) يجب أن يتكون من 6 أرقام فقط."
   },
   errors: {
     username: {
-      invalid: "Username must be 4 to 20 characters and contain only letters, numbers, or hyphens (-)."
+      invalid: "اسم المستخدم يجب أن يكون من 4 إلى 20 حرفًا ويحتوي فقط على أحرف أو أرقام أو شرطات (-)."
     },
     userRole: {
-      invalid: "Role must be either student or teacher."
+      invalid: "الدور يجب أن يكون إما طالبًا أو مدرسًا."
     },
     name: {
-      too_long: "Name must not exceed 50 characters."
+      too_long: "الاسم يجب ألا يتجاوز 50 حرفًا."
     },
     phone: {
-      invalid: "Phone number is invalid."
+      invalid: "رقم الهاتف غير صالح."
     },
     video: {
-      invalid_url: "Video URL is invalid.",
-      name_too_long: "Video name must not exceed 170 characters."
+      invalid_url: "رابط الفيديو غير صالح.",
+      name_too_long: "اسم الفيديو يجب ألا يتجاوز 170 حرفًا."
     },
     course: {
-      name_too_long: "Use a shorter course name, less than 150 characters.",
-      invalid_price: "Course price must be a non-negative integer.",
-      invalid_offer: "Offer must be a non-negative integer.",
-      invalid_thumbnail: "Thumbnail URL is invalid.",
-      description_too_long: "Description must not exceed 350 characters."
+      name_too_long: "استخدم اسمًا أقصر للدورة (أقل من 150 حرفًا).",
+      invalid_price: "سعر الدورة يجب أن يكون عددًا صحيحًا غير سالب.",
+      invalid_offer: "العرض يجب أن يكون عددًا صحيحًا غير سالب.",
+      invalid_thumbnail: "رابط الصورة المصغّرة غير صالح.",
+      description_too_long: "الوصف يجب ألا يتجاوز 350 حرفًا."
     },
     password: {
-      too_short: "Password must be longer than 12 characters.",
-      too_long: "Password must not exceed 24 characters."
+      too_short: "كلمة المرور يجب أن تكون أطول من 12 حرفًا.",
+      too_long: "كلمة المرور يجب ألا تتجاوز 24 حرفًا."
     },
     teacher: {
-      invalid_image: "Teacher image must be a valid URL.",
-      otp_invalid: "OTP must consist of exactly 6 digits."
+      invalid_image: "صورة المدرس يجب أن تكون رابطًا صالحًا.",
+      otp_invalid: "رمز التحقق (OTP) يجب أن يتكون من 6 أرقام بالضبط."
     },
     student: {
-      otp_invalid: "OTP must consist of exactly 6 digits."
+      otp_invalid: "رمز التحقق (OTP) يجب أن يتكون من 6 أرقام بالضبط."
     }
   }
 };

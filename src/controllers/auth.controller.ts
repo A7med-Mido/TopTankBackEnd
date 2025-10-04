@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import { hashPassword, verifyPassword } from "../utils/helpers/pass.helper"
 import { encrypt } from "../utils/helpers/jwt.helper"
-import { JWTPayload } from "../types/auth.types"
 import TeacherModel from "../configs/models/Teacher.model"
 import StudentModel from "../configs/models/Student.model"
 import { ZodError } from "zod"
@@ -20,7 +19,7 @@ export const userRegister = async(req: Request, res: Response) => {
       const { _id } = await StudentModel.create(userData)
       const token = encrypt({ phone: userData.phone, id: _id.toString(), userRole })
   
-      res.status(STATUS.CREATED).json({
+      return res.status(STATUS.CREATED).json({
         message: req.t("auth.registered"),
         success: true,
         token
@@ -32,7 +31,7 @@ export const userRegister = async(req: Request, res: Response) => {
       const { _id } = await TeacherModel.create(userData)
       const token = encrypt({ phone: userData.phone, id: _id.toString(),  userRole })
   
-      res.status(STATUS.CREATED).json({
+      return res.status(STATUS.CREATED).json({
         message: req.t("auth.registered"),
         success: true,
         token
@@ -44,7 +43,7 @@ export const userRegister = async(req: Request, res: Response) => {
     })
 
   } catch(error) {
-    res.status(STATUS.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: req.t("common.internalServerError")
     });
@@ -77,7 +76,7 @@ export const userLogin = async (req: Request, res: Response) => {
       }
       const token = encrypt({ phone: student.phone, id: student._id.toString(), userRole })
 
-      res.status(STATUS.CREATED).json({
+      return res.status(STATUS.CREATED).json({
         message: req.t("auth.loggedIn"),
         success: true,
         token
@@ -104,7 +103,7 @@ export const userLogin = async (req: Request, res: Response) => {
       }
       const token = encrypt({ phone: teacher.phone, id: teacher._id.toString(), userRole, })
 
-      res.status(STATUS.CREATED).json({
+      return res.status(STATUS.CREATED).json({
         message: req.t("auth.loggedIn"),
         success: true,
         token
@@ -128,7 +127,8 @@ export const userLogin = async (req: Request, res: Response) => {
 // delete Student
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id, userRole } = (req as any).user as JWTPayload
+    const { id, userRole } = req.user!
+    
     if(userRole === "student") {
       const student = await StudentModel.findByIdAndDelete(id);
       if(!student) {
