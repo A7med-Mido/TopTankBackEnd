@@ -1,11 +1,19 @@
 import { Schema } from "mongoose";
 
-const KeysSchema = new Schema({
-  key: String,
-  teacherUsername: String,
+const CourseKeysSchema = new Schema({
+  key: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  teacherUsername: {
+    type: String,
+    required: true,
+    trim: true
+  },
 }, { 
   timestamps: true,
   versionKey : false
 });
 
-export default KeysSchema
+export default CourseKeysSchema

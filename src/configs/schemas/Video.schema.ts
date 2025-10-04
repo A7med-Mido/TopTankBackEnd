@@ -1,14 +1,14 @@
 import { Schema } from "mongoose"
 
 const VideoSchema = new Schema({
-  vid: {
+  vidLink: {
     type: String,
     required: true
   },
   name: {
     type: String,
     required: true
-  }, 
+  },
 }, { 
   timestamps: true,
   versionKey: false

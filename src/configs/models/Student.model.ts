@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 import { StudentDoc } from "../../types/models.types";
-import KeysSchema from "../schemas/CourseKey.schema";
+import CourseKeysSchema from "../schemas/CourseKey.schema";
 
 const student = new Schema<StudentDoc>({
   name: { 
@@ -24,7 +24,7 @@ const student = new Schema<StudentDoc>({
     required: true,
     trim: true
   },
-  subscriptions: [KeysSchema],
+  subscriptions: [CourseKeysSchema],
   otp: {
     type: String,
     // required: true,
