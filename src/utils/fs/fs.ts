@@ -34,6 +34,6 @@ export const removeImageFile = async (filePath: string) => {
     if (error.code === "ENOENT") {
       return false
     }
-    throw error; // rethrow if it’s a different error
+    console.log(error)
   }
 };

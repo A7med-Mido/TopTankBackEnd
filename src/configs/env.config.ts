@@ -6,7 +6,9 @@ const envSchema = z.object({
   PORT: z.string().transform(Number),
   SALT: z.string(),
   GMAIL_APP_PASSWORD: z.string(),
-  GMAIL_ADDR: z.email()
+  GMAIL_ADDR: z.email(),
+  TOKEN_ISSUER: z.string(),
+  TOKEN_AUDIENCE: z.string()
 });
 
 const env = envSchema.parse(process.env);

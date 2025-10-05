@@ -10,7 +10,7 @@ import { STATUS } from "../utils/constants/http-status"
 import { JWTPayload } from "../types/auth.types"
 import AdminModel from "../database/models/Admin.model"
 
-export const isUserMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(STATUS.UNAUTHORIZED).json({

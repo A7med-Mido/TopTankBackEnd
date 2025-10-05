@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   isUserExistMiddleware,
-  isUserMiddleware
+  isAuthenticated
 } from "../middlewares/auth.middleware";
 import {
   deleteUser,
@@ -15,7 +15,7 @@ const authRoute: Router = Router();
 
 authRoute.post("/register/:userRole", isUserExistMiddleware, userRegister);
 authRoute.post("/login/:userRole", userLogin);
-authRoute.delete("/delete/user", isUserMiddleware, deleteUser);
+authRoute.delete("/delete/user", isAuthenticated, deleteUser);
 
 
 
