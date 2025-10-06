@@ -4,7 +4,7 @@ import path from "path";
 
 
 
-export const writeImageFile = async ({ id, imageFile }:{ id: string, imageFile: Buffer }) => {
+export const writeImageFile = async ({ id, imageFile }:{ id: string, imageFile: Buffer }): Promise<string> => {
 
   const image = await optImage(imageFile)
   // Generate a unique filename
