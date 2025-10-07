@@ -13,7 +13,7 @@ export const userRole = z
   .enum(["teacher", "student", "admin"], {
     message: "errors.userRole.invalid",
   })
-  .optional();
+  .nonoptional();
 
 /** --- Name Validation --- **/
 const nameValidation = z.string().max(50, {
@@ -101,14 +101,9 @@ export const adminSchema = z.object({
   user: userRole,
 });
 
+export const ip = z.union([z.string().ipv4(), z.string().ipv6()])
 
-
-export const cloudSchema = z.object({
-  ip: z.union([z.string().ipv4(), z.string().ipv6()])
-});
-
-
-
+export const cloudSchema = z.object({ ip });
 
 
 /** --- Infer Types --- **/

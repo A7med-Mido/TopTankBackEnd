@@ -1,21 +1,37 @@
 import { Router } from "express";
 import {
-  isUserExistMiddleware,
-  isAuthenticated
+  isUserAlreadyAuthenticatedMiddleware,
+  isAuthenticatedMiddleware
 } from "../middlewares/auth.middleware";
 import {
   deleteUser,
   userRegister,
   userLogin
 } from "../controllers/auth.controller";
+import { schemaValidatorMiddleware } from "../middlewares/schemaValidator.middleware";
+import { studentSchema, teacherSchema } from "../zod/zod.validator";
 
 
 const authRoute: Router = Router();
 
+// Student
+authRoute.post("/register/student",
+  schemaValidatorMiddleware(studentSchema),
+  isUserAlreadyAuthenticatedMiddleware("student"),
+  userRegister("student")
+);
+authRoute.post("/login/student", userLogin("student"));
 
-authRoute.post("/register/:userRole", isUserExistMiddleware, userRegister);
-authRoute.post("/login/:userRole", userLogin);
-authRoute.delete("/delete/user", isAuthenticated, deleteUser);
+
+authRoute.post("/register/teacher",
+  schemaValidatorMiddleware(teacherSchema),
+  isUserAlreadyAuthenticatedMiddleware("teacher"),
+  userRegister("teacher")
+);
+authRoute.post("/login/teacher", userLogin("teacher"));
+
+// Delete with user's JWT
+authRoute.delete("/delete/user", isAuthenticatedMiddleware, deleteUser);
 
 
 

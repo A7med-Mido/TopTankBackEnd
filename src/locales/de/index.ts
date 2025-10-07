@@ -68,5 +68,8 @@ export const de = {
     student: {
       otp_invalid: "Der OTP muss genau 6 Ziffern haben."
     }
+  },
+  dashboard: {
+    noCloudsExist: `Es gibt keine solche Cloud in deinem System.\nEs scheint, dass du keine geladen hast.`
   }
 };

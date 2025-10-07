@@ -3,125 +3,117 @@ import { hashPassword, verifyPassword } from "../utils/helpers/pass.helper"
 import { encrypt } from "../utils/helpers/jwt.helper"
 import TeacherModel from "../database/models/Teacher.model"
 import StudentModel from "../database/models/Student.model"
-import { ZodError } from "zod"
-import { zodErrorFormatter, studentSchema, teacherSchema } from "../zod/zod.validator"
+import { UserRole, StudentInput, TeacherInput } from "../zod/zod.validator"
 import { STATUS } from "../utils/constants/http-status"
 
 // User Registration
-export const userRegister = async(req: Request, res: Response) => {
-  try {
-    const userData = req.body
-    const { userRole } = req.params
+export const userRegister = (userRole: UserRole) => {
+  return async (req: Request, res: Response) => {
+    try {
+      const userData = req.body
 
-    if( userRole === "student" ) {
-      studentSchema.parse(userData);
-      userData.password = await hashPassword(userData.password)
-      const { _id } = await StudentModel.create(userData)
-      const token = encrypt({ phone: userData.phone, id: String(_id), userRole })
-  
-      return res.status(STATUS.CREATED).json({
-        message: req.t("auth.registered"),
-        success: true,
-        token
+      if( userRole === "student" ) {
+        userData.password = await hashPassword(userData.password)
+        const { _id } = await StudentModel.create(userData)
+        const token = encrypt({ phone: userData.phone, id: String(_id), userRole })
+    
+        return res.status(STATUS.CREATED).json({
+          message: req.t("auth.registered"),
+          success: true,
+          token
+        })
+      }
+      if( userRole === "teacher" ) {
+        userData.password = await hashPassword(userData.password)
+        const { _id } = await TeacherModel.create(userData)
+        const token = encrypt({ phone: userData.phone, id: String(_id),  userRole })
+    
+        return res.status(STATUS.CREATED).json({
+          message: req.t("auth.registered"),
+          success: true,
+          token
+        })
+      }
+      return res.status(STATUS.BAD_REQUEST).json({
+        message: req.t("common.wrongParams"),
+        success: false
       })
-    }
-    if( userRole === "teacher" ) {
-      teacherSchema.parse(userData);
-      userData.password = await hashPassword(userData.password)
-      const { _id } = await TeacherModel.create(userData)
-      const token = encrypt({ phone: userData.phone, id: String(_id),  userRole })
-  
-      return res.status(STATUS.CREATED).json({
-        message: req.t("auth.registered"),
-        success: true,
-        token
-      })
-    }
-    return res.status(STATUS.BAD_REQUEST).json({
-      message: req.t("common.wrongParams"),
-      success: false
-    })
 
-  } catch(error) {
-    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: req.t("common.internalServerError")
-    });
+    } catch(error) {
+      return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: req.t("common.internalServerError")
+      });
+    }
   }
 }
 // User Login
-export const userLogin = async (req: Request, res: Response) => {
-  try {
-    const userData = req.body
-    const { userRole } = req.params
-
-    if( userRole === "student" ) {
-      const { password, phone } = studentSchema.parse(userData);
-      const student = await StudentModel.findOne({
-        $or: [
-          { phone: phone }
-        ]
-      })
-      if(!student) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          message: req.t("user.notFoundByPhoneNumber"),
-          success: false
+export const userLogin = (userRole: UserRole) => {
+  return async (req: Request, res: Response) => {
+    try {
+      const userData = req.body
+  
+      if( userRole === "student" ) {
+        const { phone, password } = userData as StudentInput
+        const student = await StudentModel.findOne({
+          $or: [
+            { phone: phone }
+          ]
+        })
+        if(!student) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            message: req.t("user.notFoundByPhoneNumber"),
+            success: false
+          })
+        }
+        if(!await verifyPassword({ password, storedHash: student.password})) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            message: req.t("validation.wrongPassword"),
+            success: false
+          })
+        }
+  
+        const token = encrypt({ phone: student.phone, id: String(student._id), userRole })
+  
+        return res.status(STATUS.CREATED).json({
+          message: req.t("auth.loggedIn"),
+          success: true,
+          token
         })
       }
-      if(!await verifyPassword({ password, storedHash: student.password})) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          message: req.t("validation.wrongPassword"),
-          success: false
+      if( userRole === "teacher" ) {
+        const { password, phone } = userData as TeacherInput
+        const teacher = await TeacherModel.findOne({
+          $or: [
+            { phone: phone }
+          ]
+        })
+        if(!teacher) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            message: req.t("user.notFoundByPhoneNumber"),
+            success: false
+          })
+        }
+        if(!await verifyPassword({ password, storedHash: teacher.password})) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            message: req.t("validation.wrongPassword"),
+            success: false
+          })
+        }
+        const token = encrypt({ phone: teacher.phone, id: String(teacher._id), userRole })
+  
+        return res.status(STATUS.CREATED).json({
+          message: req.t("auth.loggedIn"),
+          success: true,
+          token
         })
       }
-
-      const token = encrypt({ phone: student.phone, id: String(student._id), userRole })
-
-      return res.status(STATUS.CREATED).json({
-        message: req.t("auth.loggedIn"),
-        success: true,
-        token
-      })
-    }
-    if( userRole === "teacher" ) {
-      const { password, phone } = studentSchema.parse(userData);
-      const teacher = await TeacherModel.findOne({
-        $or: [
-          { phone: phone }
-        ]
-      })
-      if(!teacher) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          message: req.t("user.notFoundByPhoneNumber"),
-          success: false
-        })
-      }
-      if(!await verifyPassword({ password, storedHash: teacher.password})) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          message: req.t("validation.wrongPassword"),
-          success: false
-        })
-      }
-      const token = encrypt({ phone: teacher.phone, id: String(teacher._id), userRole, })
-
-      return res.status(STATUS.CREATED).json({
-        message: req.t("auth.loggedIn"),
-        success: true,
-        token
-      })
-    }
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
+    } catch (error) {
+      return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
         success: false,
-        errors: zodErrorFormatter(error, req.t)
+        message: req.t("common.internalServerError")
       });
     }
-    
-    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: req.t("common.internalServerError")
-    });
   }
 }
 

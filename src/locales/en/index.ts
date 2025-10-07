@@ -19,7 +19,8 @@ export const en = {
     wrongParams: "Wrong Params.",
     internalServerError: "Internal server error.",
     noFileImageUploaded: "No file image uploaded.",
-    fileNotInServer: "The file doesn't exists."
+    fileNotInServer: "The file doesn't exists.",
+    noContent: "Empty content."
   },
     validation: {
     wrongPassword: "Wrong Password",
@@ -69,5 +70,8 @@ export const en = {
     student: {
       otp_invalid: "OTP must be exactly 6 digits."
     }
+  },
+  dashboard: {
+    noCloudsExist: `There's no such a cloud on your system.\nIt seems that you didn't charge one.`
   }
 };

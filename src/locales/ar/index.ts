@@ -18,7 +18,8 @@ export const ar = {
     wrongParams: "معطيات غير صحيحة.",
     internalServerError: "حدث خطأ في الخادم.",
     noFileImageUploaded: "لا يوجد ملف متاح للرفع.",
-    fileNotInServer: "الملف غير موجود على الخادم."
+    fileNotInServer: "الملف غير موجود على الخادم.",
+    noContent: "محتوى فارغ."
   },
   validation: {
     wrongPassword: "كلمة المرور غير صحيحة.",
@@ -68,5 +69,8 @@ export const ar = {
     student: {
       otp_invalid: "رمز التحقق (OTP) يجب أن يتكون من 6 أرقام بالضبط."
     }
+  },
+  dashboard: {
+    noCloudsExist: `لا يوجد أي سحابة في نظامك.\nيبدو أنك لم تقم بتحميل واحدة.`
   }
 };

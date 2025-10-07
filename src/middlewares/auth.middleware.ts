@@ -2,7 +2,7 @@ import StudentModel from "../database/models/Student.model"
 import TeacherModel from "../database/models/Teacher.model"
 import { decrypt } from "../utils/helpers/jwt.helper"
 import { Request, Response, NextFunction } from "express"
-import { adminSchema, studentSchema, teacherSchema } from "../zod/zod.validator"
+import { adminSchema, studentSchema, teacherSchema, UserRole } from "../zod/zod.validator"
 import { ZodError } from "zod"
 import { zodErrorFormatter } from "../zod/zod.validator"
 import { TokenExpiredError, JsonWebTokenError } from "jsonwebtoken"
@@ -10,7 +10,7 @@ import { STATUS } from "../utils/constants/http-status"
 import { JWTPayload } from "../types/auth.types"
 import AdminModel from "../database/models/Admin.model"
 
-export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
+export const isAuthenticatedMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization
   if(!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(STATUS.UNAUTHORIZED).json({
@@ -48,59 +48,59 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
   }
 }
 
-export const isUserExistMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const userData = req.body
-    const { userRole } = req.params
-    
-    if(userRole === "student") {
-      const { phone } = studentSchema.parse(userData)
-      const student = await StudentModel.findOne({ phone })
-      if(student) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          success: false,
-          message: req.t("auth.alreadyExist")
-        })
+export const isUserAlreadyAuthenticatedMiddleware = (userRole: UserRole) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userData = req.body
+      
+      if(userRole === "student") {
+        const { phone } = studentSchema.parse(userData)
+        const student = await StudentModel.findOne({ phone })
+        if(student) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            success: false,
+            message: req.t("auth.alreadyExist")
+          })
+        }
+        next()
       }
-      next()
-    }
-    if(userRole === "teacher") {
-      const { phone } = teacherSchema.parse(userData)
-      const teacher = await TeacherModel.findOne({ phone })
-      if(teacher) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          success: false,
-          message: req.t("auth.alreadyExist")
-        })
+      if(userRole === "teacher") {
+        const { phone } = teacherSchema.parse(userData)
+        const teacher = await TeacherModel.findOne({ phone })
+        if(teacher) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            success: false,
+            message: req.t("auth.alreadyExist")
+          })
+        }
+        next()
       }
-      next()
-    }
-    if(userRole === "admin") {
-      const { phone } = adminSchema.parse(userData)
-      const admin = await AdminModel.findOne({ phone })
-      if(admin) {
-        return res.status(STATUS.UNAUTHORIZED).json({
-          success: false,
-          message: req.t("auth.alreadyExist")
-        })
+      if(userRole === "admin") {
+        const { phone } = adminSchema.parse(userData)
+        const admin = await AdminModel.findOne({ phone })
+        if(admin) {
+          return res.status(STATUS.UNAUTHORIZED).json({
+            success: false,
+            message: req.t("auth.alreadyExist")
+          })
+        }
+        next()
       }
-      next()
-    }
-    return res.status(STATUS.BAD_REQUEST).json({
-      message: req.t("common.wrongParams"),
-      success: false
-    })
-  } catch(error) {
-    if (error instanceof ZodError) {
-      return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
+      return res.status(STATUS.BAD_REQUEST).json({
+        message: req.t("common.wrongParams"),
+        success: false
+      })
+    } catch(error) {
+      if (error instanceof ZodError) {
+        return res.status(STATUS.UNPROCESSABLE_ENTITY).json({
+          success: false,
+          errors: zodErrorFormatter(error, req.t)
+        });
+      }
+      return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
         success: false,
-        errors: zodErrorFormatter(error, req.t)
+        message: req.t("common.internalServerError")
       });
     }
-    
-    return res.status(STATUS.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: req.t("common.internalServerError")
-    });
   }
 }
