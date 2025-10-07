@@ -54,9 +54,9 @@ export const getOneCloudInfo = async (req: Request, res: Response) => {
 }
 
 // Cleaning All Clouds
-export const cleanALLClouds = async () => {
+export const cleanALLClouds = async (req: Request, res: Response) => {
   try {
-    
+
   } catch(error) {
 
   }
