@@ -1,96 +1,85 @@
-import StudentModel from "../database/models/Student.model"
-import TeacherModel from "../database/models/Teacher.model"
-import { StudentInput, TeacherInput, UserRole } from "../zod/zod.validator"
-import { hashPassword } from "../utils/helpers/pass.helper"
-import { encrypt } from "../utils/helpers/jwt.helper"
-import { verifyPassword } from "../utils/helpers/pass.helper"
+import StudentModel from "../database/models/Student.model";
+import TeacherModel from "../database/models/Teacher.model";
+import { StudentInput, TeacherInput, UserRole } from "../zod/zod.validator";
+import { hashPassword, verifyPassword } from "../utils/helpers/pass.helper";
+import { encrypt } from "../utils/helpers/jwt.helper";
 
-// User Register
+// Create User
 export const createUser = async (
   role: UserRole,
   userData: StudentInput | TeacherInput
-) => {
+): Promise<string | null> => {
   try {
-    switch (role) {
-      case "student": {
-        userData.password = await hashPassword(userData.password)
-        const { _id } = await StudentModel.create(userData)
-        const token = encrypt({ phone: userData.phone, id: String(_id), userRole: role })
-        return token
-      }
-      case "teacher": {
-        userData.password = await hashPassword(userData.password)
-        const { _id } = await TeacherModel.create(userData)
-        const token = encrypt({ phone: userData.phone, id: String(_id), userRole: role })
-        return token
-      }
-      default: return null
-    }
-  } catch(error) {
-    throw error
-  }
-}
+    userData.password = await hashPassword(userData.password);;
 
-// User Login
+    if(role === "student") {
+      const { _id, phone } = await StudentModel.create(userData);
+      return encrypt({ phone, id: String(_id), userRole: role });
+    }
+
+    if(role === "teacher") {
+      const { _id, phone } = await TeacherModel.create(userData);
+      return encrypt({ phone, id: String(_id), userRole: role });
+    }
+
+    return null;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Login User
 export const loginUser = async (
   role: UserRole,
   userData: StudentInput | TeacherInput
 ): Promise<null | string | undefined> => {
   try {
-    switch (role) {
-      case "student": {
-        const { phone, password } = userData as StudentInput
-        const student = await StudentModel.findOne({
-          $or: [
-            { phone: phone }
-          ]
-        })
-        if(!student) return null
-        if(!await verifyPassword({ password, storedHash: student.password})) return null
+    const { phone, password } = userData;
 
-        return encrypt({ phone: student.phone, id: String(student._id), userRole: role })
-      }
-      case "teacher": {
-        const { phone, password } = userData as TeacherInput
-        const teacher = await TeacherModel.findOne({
-          $or: [
-            { phone: phone }
-          ]
-        })
-        if(!teacher) return null
-        if(!await verifyPassword({ password, storedHash: teacher.password})) return null
+      if (role === "student") {
+        const student = await StudentModel.findOne({ phone });
+        if (!student) return null;
 
-        return encrypt({ phone: teacher.phone, id: String(teacher._id), userRole: role })
+        const valid = await verifyPassword({ password, storedHash: student.password });
+        if (!valid) return null;
+
+        return encrypt({ phone: student.phone, id: String(student._id), userRole: role });
       }
-      default: return undefined
-    }
-  } catch(error) {
-    throw error
+      
+      if(role === "teacher") {
+        const teacher = await TeacherModel.findOne({ phone });
+        if (!teacher) return null;
+
+        const valid = await verifyPassword({ password, storedHash: teacher.password });
+        if (!valid) return null;
+
+        return encrypt({ phone: teacher.phone, id: String(teacher._id), userRole: role });
+      }
+      return undefined;
+  } catch (error) {
+    throw error;
   }
-}
+};
 
-
-
-
-export const deleteUserById = async (
+// Delete User
+export const deleteUser = async (
   role: UserRole,
   id: string
 ): Promise<"userDoesNotExistAnymore" | null | true> => {
   try {
-    switch (role) {
-      case "student": {
-        const student = await StudentModel.findByIdAndDelete(id);
-        if(!student) return "userDoesNotExistAnymore"
-        return true
-      }
-      case "teacher": {
-        const teacher = await TeacherModel.findByIdAndDelete(id);
-        if(!teacher) return "userDoesNotExistAnymore"
-        return true
-      }
-      default: return null
+
+    if(role === "student") {
+      const student = await StudentModel.findByIdAndDelete(id);
+      return student ? true : "userDoesNotExistAnymore";
     }
-  } catch(error) {
-    throw error
+
+    if(role === "teacher") {
+      const teacher = await TeacherModel.findByIdAndDelete(id);
+      return teacher ? true : "userDoesNotExistAnymore";
+    }
+
+    return null;
+  } catch (error) {
+    throw error;
   }
-}
+};

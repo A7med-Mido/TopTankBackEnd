@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 dotenv.config();
 import { createServer } from "http";
 import app from "./app";
-import ConnectDB from "./configs/db.config";
+import ConnectDB from "./providers/db.provider";
 import env from "./configs/env.config";
 
 const httpServer = createServer(app);

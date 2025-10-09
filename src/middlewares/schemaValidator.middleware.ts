@@ -14,7 +14,7 @@ export const schemaValidatorMiddleware = (
         success: false
       })
     }
-    const user = schema.parse({
+    schema.parse({
       ...req.body
     })
     next()

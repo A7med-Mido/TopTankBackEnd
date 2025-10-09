@@ -101,6 +101,10 @@ export const adminSchema = z.object({
   user: userRole,
 });
 
+export const revokedToken = z.object({
+  token: z.string()
+})
+
 export const ip = z.union([z.string().ipv4(), z.string().ipv6()])
 
 export const cloudSchema = z.object({ ip });
@@ -113,6 +117,7 @@ export type TeacherInput = z.infer<typeof teacherSchema>;
 export type StudentInput = z.infer<typeof studentSchema>;
 export type CourseInput = z.infer<typeof courseSchema>;
 export type CloudInput = z.infer<typeof cloudSchema>;
+export type RevokedTokenInput = z.infer<typeof revokedToken>;
 
 
 
