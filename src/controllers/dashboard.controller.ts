@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { STATUS } from "../utils/constants/http-status";
-import { cloudFetchHook } from "../hooks/dashboard.hook";
+import { cloudFetchHook } from "../services/dashboard.service";
 import CloudModel from "../database/models/Cloud.model";
 
 // Getting All Clouds Info

@@ -15,20 +15,30 @@ import { studentSchema, teacherSchema } from "../zod/zod.validator";
 const authRoute: Router = Router();
 
 // Student
-authRoute.post("/register/student",
+authRoute.post(
+  "/register/student",
   schemaValidatorMiddleware(studentSchema),
   isUserAlreadyAuthenticatedMiddleware("student"),
   userRegister("student")
 );
-authRoute.post("/login/student", userLogin("student"));
+authRoute.post(
+  "/login/student", 
+  schemaValidatorMiddleware(studentSchema),
+  userLogin("student")
+);
 
 
-authRoute.post("/register/teacher",
+authRoute.post(
+  "/register/teacher",
   schemaValidatorMiddleware(teacherSchema),
   isUserAlreadyAuthenticatedMiddleware("teacher"),
   userRegister("teacher")
 );
-authRoute.post("/login/teacher", userLogin("teacher"));
+authRoute.post(
+  "/login/teacher", 
+  schemaValidatorMiddleware(teacherSchema),
+  userLogin("teacher")
+);
 
 // Delete with user's JWT
 authRoute.delete("/delete/user", isAuthenticatedMiddleware, deleteUser);

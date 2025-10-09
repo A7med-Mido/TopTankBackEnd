@@ -7,7 +7,8 @@ export const en = {
     invalidToken: "Invalid token.",
     registered: "You have registered successfully.",
     loggedIn: "You have logged in successfully.",
-    alreadyExist: "This user already exists."
+    alreadyExist: "This user already exists.",
+    wrongCredentials: "Wrong Credentials."
   },
   user: {
     notFoundByPhoneNumber: "No such user with phone number.",

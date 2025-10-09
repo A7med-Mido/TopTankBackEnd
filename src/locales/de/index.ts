@@ -6,7 +6,8 @@ export const de = {
     invalidToken: "Ungültiges Token.",
     registered: "Du hast dich erfolgreich registriert.",
     loggedIn: "Du hast dich erfolgreich eingeloggt.",
-    alreadyExist: "Dieser Benutzer existiert bereits."
+    alreadyExist: "Dieser Benutzer existiert bereits.",
+    wrongCredentials: "Falsche Anmeldedaten."
   },
   user: {
     notFoundByPhoneNumber: "Kein Benutzer mit dieser Telefonnummer gefunden.",

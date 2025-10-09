@@ -6,7 +6,8 @@ export const ar = {
     invalidToken: "رمز غير صالح.",
     registered: "تم تسجيلك بنجاح.",
     loggedIn: "تم تسجيل الدخول بنجاح.",
-    alreadyExist: "هذا المستخدم موجود بالفعل."
+    alreadyExist: "هذا المستخدم موجود بالفعل.",
+    wrongCredentials: "بيانات الاعتماد غير صحيحة."
   },
   user: {
     notFoundByPhoneNumber: "لا يوجد مستخدم بهذا الرقم.",
