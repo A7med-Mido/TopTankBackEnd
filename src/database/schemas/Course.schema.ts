@@ -35,7 +35,10 @@ const CourseSchema = new Schema({
     required: true,
     default: 0
   },
-  videos: [VideoSchema],
+  videos: {
+    type: [VideoSchema],
+    default: undefined
+  },
 }, { 
   timestamps: true,
   versionKey: false

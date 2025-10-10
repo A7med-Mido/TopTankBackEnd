@@ -3,9 +3,9 @@ import StudentModel from "../database/models/Student.model";
 import { STATUS } from "../utils/constants/http-status";
 import { removeImageFile, writeImageFile } from "../utils/fs/fs";
 import { UploadedFile } from "express-fileupload";
+import { queryStudentData } from "../services/student.service";
 
-
-export const getStudentData = async (req: Request, res: Response) => {
+export const getStudentDataController = async (req: Request, res: Response) => {
   try {
     const { id } = req.user
     const student = await StudentModel.findById(id).select("-password -otp -phone -_id -CreatedAt -UpdatedAt");
@@ -28,7 +28,7 @@ export const getStudentData = async (req: Request, res: Response) => {
 }
 
 
-export const postStudentProfilePicture = async (req: Request, res: Response) => {
+export const postStudentProfilePictureController = async (req: Request, res: Response) => {
   try {
     if (!req.files || !req.files.image) {
       return res.status(STATUS.BAD_REQUEST).json({
@@ -39,9 +39,18 @@ export const postStudentProfilePicture = async (req: Request, res: Response) => 
     const imageData = (req.files.image as UploadedFile).data
 
     const { id } = req.user
-    const { image } = await StudentModel.findById(id).orFail();
-    if(image) {
-      const isRemoved = await removeImageFile(image)
+    const student = await queryStudentData({
+      id,
+      property: "image"
+    })
+    if(!student) {
+      return res.status(STATUS.UNAUTHORIZED).json({
+        message: req.t("user.noUserAnymore"),
+        success: false
+      })
+    }
+    if(!student.image) {
+      const isRemoved = await removeImageFile(student.image)
       
       if(!isRemoved) {
         return res.status(STATUS.NOT_FOUND).json({

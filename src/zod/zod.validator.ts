@@ -60,7 +60,7 @@ export const teacherSchema = z.object({
     .string()
     .min(9, { message: "errors.password.too_short" })
     .max(24, { message: "errors.password.too_long" }),
-  image: z.string().url({ message: "errors.teacher.invalid_image" }).optional(),
+  image: z.string().url({ message: "errors.teacher.invalid_image" }).optional().default(undefined),
   verified: z.boolean().default(false),
   followers: z.number().default(0),
   balance: z.number().default(0),
@@ -85,7 +85,7 @@ export const studentSchema = z.object({
     .string()
     .min(9, { message: "errors.password.too_short" })
     .max(24, { message: "errors.password.too_long" }),
-  image: z.string().optional(),
+  image: z.string().optional().default(undefined),
   subscriptions: z.array(keysSchema).default([]).optional(),
   otp: z.string().min(6, { message: "errors.student.otp_invalid" }).max(6, { message: "errors.student.otp_invalid" }).default("").optional(),
   user: userRole,

@@ -4,7 +4,7 @@ import { STATUS } from "../utils/constants/http-status";
 import { writeImageFile, removeImageFile } from "../utils/fs/fs";
 import { UploadedFile } from "express-fileupload";
 
-export const getTeacherData = async (req: Request, res: Response) => {
+export const getTeacherDataController = async (req: Request, res: Response) => {
   try {
     const { id } = req.user
     const teacher = await TeacherModel.findById(id).select("-password -otp -phone -_id -CreatedAt -UpdatedAt");
@@ -26,7 +26,7 @@ export const getTeacherData = async (req: Request, res: Response) => {
   } 
 }
 
-export const postTeacherProfilePicture = async (req: Request, res: Response) => {
+export const postTeacherProfilePictureController = async (req: Request, res: Response) => {
   try {
     if (!req.files || !req.files.image) {
       return res.status(STATUS.BAD_REQUEST).json({

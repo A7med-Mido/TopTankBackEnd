@@ -7,16 +7,16 @@ const teacher = new Schema<TeacherDoc>({
     type: String,
     required: true,
     trim: true,
-    unique: true
   },
   username: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    unique: true
   },
   image: {
     type: String,
-    required: false,
+    default: "",
   },
   phone: {
     type: String,
@@ -37,10 +37,12 @@ const teacher = new Schema<TeacherDoc>({
     type: Number,
     default: 0
   },
-  courses: [CourseSchema],
+  courses: {
+    type: [CourseSchema],
+    default: null
+  },
   otp: {
     type: String,
-    // required: true,
     default: "",
     min: 6,
     max: 6
